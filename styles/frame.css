@@ -1,0 +1,328 @@
+.frame-container {
+    min-height: 100vh;
+  }
+  .frame-frame {
+    width: 100%;
+    height: 926px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    max-width: 428px;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    border-radius: 0px 0px 0px 0px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .frame-group9 {
+    top: 184px;
+    left: 16px;
+    width: 396px;
+    height: 48px;
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-right: 0;
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0;
+  }
+  .frame-rectangle2 {
+    top: 48px;
+    left: 0px;
+    width: 396px;
+    height: 48px;
+    position: absolute;
+    box-sizing: border-box;
+    border-color: rgba(240, 243, 242, 1);
+    border-style: solid;
+    border-width: 2px;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-text {
+    top: 24px;
+    color: rgba(0, 0, 0, 1);
+    width: 388px;
+    height: auto;
+    position: absolute;
+    font-size: 20px;
+    align-self: auto;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-group91 {
+    top: 272px;
+    left: 16px;
+    width: 396px;
+    height: 48px;
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-right: 0;
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0;
+  }
+  .frame-rectangle21 {
+    top: 48px;
+    left: 0px;
+    width: 396px;
+    height: 48px;
+    position: absolute;
+    box-sizing: border-box;
+    border-color: rgba(240, 243, 242, 1);
+    border-style: solid;
+    border-width: 2px;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-text02 {
+    top: 24px;
+    color: rgba(0, 0, 0, 1);
+    width: 388px;
+    height: auto;
+    position: absolute;
+    font-size: 20px;
+    align-self: auto;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-frame1 {
+    top: 0px;
+    left: 0px;
+    width: 428px;
+    height: 60px;
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-right: 0;
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0;
+  }
+  .frame-rectangle9 {
+    top: 0px;
+    left: 0px;
+    width: 428px;
+    height: 60px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-text04 {
+    top: 16px;
+    color: rgba(255, 255, 255, 1);
+    width: 428px;
+    height: auto;
+    position: absolute;
+    font-size: 24px;
+    align-self: auto;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-text06 {
+    top: 20px;
+    left: 311px;
+    color: rgba(255, 255, 255, 1);
+    width: 100px;
+    height: auto;
+    position: absolute;
+    font-size: 20px;
+    align-self: auto;
+    font-style: Medium;
+    text-align: right;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-vector {
+    top: 18px;
+    left: 16.0445556640625px;
+    width: 31px;
+    height: 27px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-i-m-a-g-e03a1 {
+    top: 60px;
+    left: 0px;
+    width: 428px;
+    height: 191px;
+    position: absolute;
+    box-sizing: border-box;
+    border-color: transparent;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-text08 {
+    top: 384px;
+    left: 16px;
+    color: rgba(113, 119, 118, 1);
+    height: auto;
+    position: absolute;
+    font-size: 16px;
+    align-self: auto;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-buttonlg {
+    top: 534px;
+    left: 15px;
+    width: 396px;
+    height: 60px;
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-right: 0;
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0;
+  }
+  .frame-rectangle10 {
+    top: 0px;
+    left: 0px;
+    width: 396px;
+    height: 60px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-text10 {
+    top: 11px;
+    left: 30px;
+    color: rgba(255, 255, 255, 1);
+    width: 335px;
+    height: auto;
+    position: absolute;
+    font-size: 32px;
+    align-self: auto;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-buttonlg1 {
+    top: 615px;
+    left: 14px;
+    width: 396px;
+    height: 60px;
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-right: 0;
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0;
+  }
+  .frame-rectangle101 {
+    top: 0px;
+    left: 0px;
+    width: 396px;
+    height: 60px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-text12 {
+    top: 11px;
+    left: 30px;
+    color: rgba(255, 255, 255, 1);
+    width: 335px;
+    height: auto;
+    position: absolute;
+    font-size: 32px;
+    align-self: auto;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: normal;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+  }
+  .frame-vector1 {
+    top: 451px;
+    left: 58px;
+    width: 31px;
+    height: 32px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-vector2 {
+    top: 451px;
+    left: 199px;
+    width: 27px;
+    height: 32px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .frame-vector3 {
+    top: 451px;
+    left: 347px;
+    width: 17px;
+    height: 32px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
