@@ -5,7 +5,8 @@ import PropTypes from 'prop-types'
 const Header = (props:{
   Vector_alt:string,
   Vector_src:string,
-  headerRightText:string
+  headerRightText:string,
+  text:string
 
 }) => {
   return (
@@ -16,7 +17,7 @@ const Header = (props:{
           src={props.Vector_src}
           className="header-vector"
         />
-        <span className="header-text">SIGN IN</span>
+        <span className="header-text">{props.text}</span>
         <span className="header-text1">{props.headerRightText}</span>
       </div>
       <style jsx>

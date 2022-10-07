@@ -21,7 +21,9 @@ async function signIn(email:string,password:string){
     }
     return response.json()
 }
+async function getUserData(){
     
+}   
 
 
 
