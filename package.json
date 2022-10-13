@@ -13,10 +13,13 @@
     "@tanstack/react-query": "^4.1.0",
     "@types/bootstrap": "^5.2.1",
     "@types/react-bootstrap": "^0.32.30",
+    "@types/react-cookies": "^0.1.0",
     "bootstrap": "^5.2.0",
     "next": "12.2.4",
+    "next-cookies": "^2.0.3",
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",
+    "react-cookies": "^0.1.1",
     "react-dom": "18.2.0",
     "react-helmet": "^6.1.0",
     "recoil": "^0.7.5"
