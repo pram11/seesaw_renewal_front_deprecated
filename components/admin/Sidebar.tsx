@@ -1,17 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
 import AdminSidebarItem from './SidebarItem'
-
+type SidebarItem ={
+  id:string,
+  text:string,
+  targetURL:string,
+}
 const AdminSidebar = (props) => {
+  const [sidebarItemList,setSidebarItemList] = useState([
+    {id:"user",text:"사용자관리",targetURL:"/admin/user"},
+    {id:"code",text:"코드관리",targetURL:"/admin/code"},
+    {id:"file",text:"파일관리",targetURL:"/admin/file"},
+    {id:"role",text:"권한관리",targetURL:"/admin/role"},
+    {id:"signout",text:"로그아웃",targetURL:"/signout"}
+
+  ])
+  useEffect(()=>{
+
+  },[])
   return (
     <>
       <div className={`admin-sidebar-frame79 ${props.rootClassName} `}>
-        <AdminSidebarItem text="사용자 관리"></AdminSidebarItem>
-        <AdminSidebarItem text="코드 관리"></AdminSidebarItem>
-        <AdminSidebarItem text="파일 관리"></AdminSidebarItem>
-        <AdminSidebarItem text="권한 관리"></AdminSidebarItem>
+        {
+          sidebarItemList.map((item)=>{
+            return (<AdminSidebarItem text={item.text} onClick={()=>{location.href = item.targetURL}} id={item.id}/>)
+          })
+        }
       </div>
       <style jsx>
         {`

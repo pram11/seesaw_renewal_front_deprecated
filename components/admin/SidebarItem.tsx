@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 
 import PropTypes from 'prop-types'
 
-const AdminSidebarItem = (props) => {
+const AdminSidebarItem = (props:{
+  id:string,
+  text:string,
+  onClick:MouseEventHandler,
+
+}) => {
   return (
     <>
-      <div className="admin-sidebar-item-selector">
+      <div className="admin-sidebar-item-selector" onClick={props.onClick}>
         <span className="admin-sidebar-item-text">{props.text}</span>
         <img
-          alt={props.Vector_alt}
-          src={props.Vector_src}
+          alt={'/assets/admin/vectori611-dyq.svg'}
+          src={'/assets/admin/vectori611-dyq.svg'}
           className="admin-sidebar-item-vector"
         />
       </div>
@@ -58,10 +63,5 @@ AdminSidebarItem.defaultProps = {
   Vector_alt: 'VectorI611',
 }
 
-AdminSidebarItem.propTypes = {
-  Vector_src: PropTypes.string,
-  text: PropTypes.string,
-  Vector_alt: PropTypes.string,
-}
 
 export default AdminSidebarItem
