@@ -1,21 +1,22 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 
 import PropTypes from 'prop-types'
 
 const Header = (props:{
   Vector_alt:string,
   Vector_src:string,
-  headerRightText:string,
+  headerRightText:string|null,
   text:string
-
+  onMenuClick:MouseEventHandler|undefined
 }) => {
   return (
     <>
       <div className="header-container">
         <img
-          alt={props.Vector_alt}
-          src={props.Vector_src}
+          alt={"menu"}
+          src={"/playground_assets/vectori221-3ej.svg"}
           className="header-vector"
+          onClick={props.onMenuClick}
         />
         <span className="header-text">{props.text}</span>
         <span className="header-text1">{props.headerRightText}</span>
@@ -75,16 +76,11 @@ const Header = (props:{
 
 Header.defaultProps = {
   Vector_alt: 'VectorI221',
-  headerRightText: 'Text',
+  headerRightText: null,
   headerTitle: '메뉴명',
   Vector_src: '/playground_assets/vectori221-3ej.svg',
+  onMenuClick:undefined
 }
 
-Header.propTypes = {
-  Vector_alt: PropTypes.string,
-  headerRightText: PropTypes.string,
-  headerTitle: PropTypes.string,
-  Vector_src: PropTypes.string,
-}
 
 export default Header
