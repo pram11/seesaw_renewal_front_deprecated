@@ -2,25 +2,28 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
-const AdminButton = (props) => {
+type ButtonTypeEnum = 'primary'|'green'|'yellow'|'red'|'light'|'dark'|'blue'
+const AdminButton = (props:{
+  rootClassName: string
+  text: string,
+  type: ButtonTypeEnum
+}) => {
   return (
     <>
-      <div className={`admin-button-container ${props.rootClassName} `}>
-        <div className="admin-button-component2">
+        <button className={["admin-button-component",
+        props.type==="primary"?"button-background-blue":"",
+        props.type==="green"?"button-background-green":"",
+        props.type==="yellow"?"button-background-yellow":"",
+        props.type==="red"?"button-background-red":"",
+        props.type==="light"?"button-background-light":"",
+        props.type==="dark"?"button-background-dark":"",
+        ].join(" ")}>
           <span className="admin-button-text">{props.text}</span>
-        </div>
-      </div>
+        </button>
+      
       <style jsx>
         {`
-          .admin-button-container {
-            width: auto;
-            height: auto;
-            display: flex;
-            position: relative;
-            align-items: flex-start;
-            flex-direction: column;
-          }
-          .admin-button-component2 {
+          .admin-button-component{
             width: 140px;
             height: 60px;
             display: flex;
@@ -32,7 +35,7 @@ const AdminButton = (props) => {
             border-color: transparent;
             border-radius: 0px 0px 0px 0px;
             justify-content: center;
-            background-color: #2e64cb;
+            
           }
           .admin-button-text {
             color: var(--dl-color-default-white);
@@ -43,6 +46,15 @@ const AdminButton = (props) => {
             text-align: center;
             font-weight: 500;
           }
+          .button-background-blue{
+            background-color: #2e64cb;
+          }
+          .button-background-red{
+            background-color: #E34033;
+          }
+          .button-background-green{
+            background-color: #369B78;
+          }
         `}
       </style>
     </>
@@ -52,11 +64,8 @@ const AdminButton = (props) => {
 AdminButton.defaultProps = {
   rootClassName: '',
   text: 'Text',
+  type:'primary'
 }
 
-AdminButton.propTypes = {
-  rootClassName: PropTypes.string,
-  text: PropTypes.string,
-}
 
 export default AdminButton
