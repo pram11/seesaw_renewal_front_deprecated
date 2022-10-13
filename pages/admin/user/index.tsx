@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
-
+import dynamic from 'next/dynamic'
 import Header from '../../../components/header'
 import AdminSidebar from '../../../components/admin/Sidebar'
-import DropDownSelect from '../../../components/admin/DropDownSelect'
 import AdminUserTable from '../../../components/admin/UserTable'
 import AdminButton from '../../../components/admin/Button'
+const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
+const AdminUserList = (props) => {
+  const [isSidebarOpen,showSidebar] = useState(false);
 
-const AdminuserList = (props) => {
   return (
     <>
       <div className="adminuser-list-container">
@@ -20,15 +21,16 @@ const AdminuserList = (props) => {
         </Head>
         <div className="adminuser-list-adminusermanagedesktop">
           <Header
-            headerTitle="사용자 목록"
+            text="사용자 목록"
             rootClassName="header-root-class-name"
             headerRightText=" "
+            onMenuClick={()=>{showSidebar(!isSidebarOpen)}}
           ></Header>
           <div className="adminuser-list-frame118">
-            <AdminSidebar></AdminSidebar>
+            {isSidebarOpen?<AdminSidebar/>:null}
             <div className="adminuser-list-group113">
               <form className="adminuser-list-form">
-                <DropDownSelect text="이름"></DropDownSelect>
+                <DropDownSelect options={[{id:"1",value:"사용자명"}]} defaultValue={"1"}></DropDownSelect>
                 <div className="adminuser-list-group47">
                   <input
                     type="text"
@@ -36,11 +38,10 @@ const AdminuserList = (props) => {
                     className="adminuser-list-textinput input"
                   />
                 </div>
-                <DropDownSelect text="정렬기준"></DropDownSelect>
-                <button className="adminuser-list-buttonlg">
-                  <span className="adminuser-list-text">
-                    <span>검색</span>
-                  </span>
+                
+                <DropDownSelect options={[{id:"1",value:"정렬기준"}]}></DropDownSelect>
+                <button className="adminuser-list-buttonlg adminuser-list-text">
+                    검색
                 </button>
               </form>
               <div className="adminuser-list-container1">
@@ -53,6 +54,7 @@ const AdminuserList = (props) => {
                   <AdminButton
                     text="선택 삭제"
                     rootClassName="admin-button-root-class-name1"
+                    type="red"
                   ></AdminButton>
                 </div>
               </div>
@@ -141,15 +143,16 @@ const AdminuserList = (props) => {
             width: auto;
             height: 100%;
             border-width: 0px;
+            font-size:24px;
           }
           .adminuser-list-buttonlg {
             width: 120px;
             height: 48px;
-            display: flex;
+            display: block;
             position: relative;
             box-sizing: border-box;
-            align-items: flex-start;
-            flex-shrink: 0;
+            text-align:center;
+            line-height:48px;
             border-color: transparent;
             margin-right: 0;
             border-radius: 0px 0px 0px 0px;
@@ -157,19 +160,14 @@ const AdminuserList = (props) => {
             background-color: var(--dl-color-blue-blue500);
           }
           .adminuser-list-text {
-            top: 9px;
             color: rgba(255, 255, 255, 1);
             width: 120px;
-            height: auto;
-            position: absolute;
             font-size: 24px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
             font-family: Roboto;
             font-weight: 700;
             line-height: normal;
             font-stretch: normal;
+            text-align:center;
             margin-right: 0;
             margin-bottom: 0;
             text-decoration: none;
@@ -204,4 +202,4 @@ const AdminuserList = (props) => {
   )
 }
 
-export default AdminuserList
+export default AdminUserList
