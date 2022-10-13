@@ -4,9 +4,11 @@ import Head from 'next/head'
 import Header from '../../components/header'
 import DefaultInput from '../../components/default-input'
 import SocialButtons from '../../components/social-buttons'
-import Buttonlg from '../../components/buttonlg'
+import ButtonLg from '../../components/ButtonLg'
+import { useRouter } from 'next/router'
 
 const Login = (props:any) => {
+  const router = useRouter();
   return (
     <>
       <div className="login-container">
@@ -31,8 +33,8 @@ const Login = (props:any) => {
           </div>
           <SocialButtons></SocialButtons>
           <div className="login-container3">
-            <Buttonlg text="SIGN IN"></Buttonlg>
-            <Buttonlg text="SIGN UP"></Buttonlg>
+            <ButtonLg text="SIGN IN" onClick={()=>{router.push("/signin")}}></ButtonLg>
+            <ButtonLg text="SIGN UP" onClick={()=>{router.push("/signup")}}></ButtonLg>
           </div>
         </div>
       </div>

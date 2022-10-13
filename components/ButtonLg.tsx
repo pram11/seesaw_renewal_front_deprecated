@@ -6,7 +6,7 @@ const Buttonlg = (props) => {
   return (
     <>
       <div className={`buttonlg-container ${props.rootClassName} `}>
-        <button className="buttonlg-buttonlg">
+        <button className="buttonlg-buttonlg" onClick={props.onClick}>
           <span className="buttonlg-text">{props.text}</span>
         </button>
       </div>
