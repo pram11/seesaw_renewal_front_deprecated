@@ -1,13 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import Header from '../../../components/header'
 import AdminSidebar from '../../../components/admin/Sidebar'
-import AdminUserTable from '../../../components/admin/UserTable'
+import AdminUserTable from '../../../components/admin/user/UserTable'
 import AdminButton from '../../../components/admin/Button'
+import { useUserList } from '../../../services/users'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
+  const userList = useUserList({
+    name: '',
+    id: '',
+    passport_num: '',
+    phonenum: '',
+    email: ''
+  })
+  
+  console.log(userList);
 
   return (
     <>

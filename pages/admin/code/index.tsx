@@ -3,7 +3,7 @@ import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import Header from '../../../components/header'
 import AdminSidebar from '../../../components/admin/Sidebar'
-import AdminUserTable from '../../../components/admin/UserTable'
+import AdminCodeTable from '../../../components/admin/code/CodeTable'
 import AdminButton from '../../../components/admin/Button'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
@@ -45,7 +45,7 @@ const AdminUserList = (props) => {
                 </button>
               </form>
               <div className="adminuser-list-container1">
-                <AdminUserTable></AdminUserTable>
+                <AdminCodeTable></AdminCodeTable>
                 <div className="adminuser-list-button-group">
                   <AdminButton
                     text="사용자 추가"
