@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import Header from '../../components/header'
@@ -10,24 +10,32 @@ import { useCookies } from 'react-cookie'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { seesawTokenState } from '../../states'
 import { useSignIn } from '../../services/users'
-import { getUserRoles, useUserRoles } from '../../utils/user'
+import { useUserRoles } from '../../utils/user'
+import AlertModal from '../../components/modal/AlertModal'
 
 const Login = (props:any) => {
   const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN']);
   const [seesawToken,setSeesawTokenState]= useRecoilState(seesawTokenState);
-  const {refetch:signIn} = useSignIn("an6207@gmail.com","test12351312!");
+  const [modalState,setModalState] = useState(false);
+  const [email,setEmail] = React.useState("");
+  const [password,setPassword] = React.useState("");
+  const {refetch:signIn} = useSignIn(email,password);
   const getUserRoles = useUserRoles();
   const onClickSignIn = async () => {
     const response = await signIn();
     console.log(response);
     if (response.status==="success"){
       const roles = getUserRoles();
+      if (roles.includes("ADMIN")){
+        router.push("/admin/user");
+      }else{
+        router.push("/chat");
+      }
       console.log(roles)
+    }else{
+      console.log("로그인 실패")
+      setModalState(true);
     }
-    //temp
-    // setCookie("SEESAW_TOKEN","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZXMiOlsiQURNSU4iLCJDSEFUX0NIQVRST09NX0ZVTExBQ0NFU1NcciIsIkNIQVRfQ09OVEVOVFNfRlVMTEFDQ0VTU1xyIiwiQ0hBVF9DT05URU5UU19SRUFEQUJMRVxyIiwiQ0hBVF9DT05URU5UU19XUklURUFCTEVcciIsIkNIQVRfTVlDSEFUUk9PTV9SRUFEQUJMRVxyIiwiQ0hBVF9NWUNIQVRST09NX1dSSVRFQUJMRVxyIiwiRklMRV9BRE1JTl9ERUxFVEFCTEVcciIsIkZJTEVfQURNSU5fRURJVEFCTEVcciIsIlVTRVJfQVVUSE9SSVpBVElPTl9VUERBVEUiLCJXT1JLX0FETUlOX0RFTEVURUFCTEVcciIsIldPUktfREVMRVRFQUJMRVxyIiwiV09SS19FRElUQUJMRVxyIiwiV09SS19SRUFEQUJMRVxyIiwiV09SS19SRVNVTUVfUkVBREFCTEVcciIsIldPUktfUkVTVU1FX1NVUEVSX1JFQURBQkxFXHIiLCJXT1JLX1JFU1VNRV9XUklURUFCTEVcciIsIldPUktfV1JJVEVBQkxFXHIiXSwiaWF0IjoxNjY2NDQyNDc3LCJleHAiOjE2NjY1Mjg4Nzd9.EM79VUPm70WWdD2W4KPodUOiC5UqbOworxJSltvT_DR46xEvJWWGP2yw9wtqTmsbNZmQfBTs_5furrbrHk_Uew")
-    // setSeesawTokenState("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZXMiOlsiQURNSU4iLCJDSEFUX0NIQVRST09NX0ZVTExBQ0NFU1NcciIsIkNIQVRfQ09OVEVOVFNfRlVMTEFDQ0VTU1xyIiwiQ0hBVF9DT05URU5UU19SRUFEQUJMRVxyIiwiQ0hBVF9DT05URU5UU19XUklURUFCTEVcciIsIkNIQVRfTVlDSEFUUk9PTV9SRUFEQUJMRVxyIiwiQ0hBVF9NWUNIQVRST09NX1dSSVRFQUJMRVxyIiwiRklMRV9BRE1JTl9ERUxFVEFCTEVcciIsIkZJTEVfQURNSU5fRURJVEFCTEVcciIsIlVTRVJfQVVUSE9SSVpBVElPTl9VUERBVEUiLCJXT1JLX0FETUlOX0RFTEVURUFCTEVcciIsIldPUktfREVMRVRFQUJMRVxyIiwiV09SS19FRElUQUJMRVxyIiwiV09SS19SRUFEQUJMRVxyIiwiV09SS19SRVNVTUVfUkVBREFCTEVcciIsIldPUktfUkVTVU1FX1NVUEVSX1JFQURBQkxFXHIiLCJXT1JLX1JFU1VNRV9XUklURUFCTEVcciIsIldPUktfV1JJVEVBQkxFXHIiXSwiaWF0IjoxNjY2NDQyNDc3LCJleHAiOjE2NjY1Mjg4Nzd9.EM79VUPm70WWdD2W4KPodUOiC5UqbOworxJSltvT_DR46xEvJWWGP2yw9wtqTmsbNZmQfBTs_5furrbrHk_Uew");
-    // console.log("SEESAW TOKEN GAINED",seesawToken,cookies.SEESAW_TOKEN);
   }
   const router = useRouter();
   return (
@@ -46,8 +54,8 @@ const Login = (props:any) => {
             />
           </div>
           <div className="login-container2">
-            <DefaultInput text="LOGIN"></DefaultInput>
-            <DefaultInput text="PASSWORD"></DefaultInput>
+            <DefaultInput text="EMAIL" onChange={val=>setEmail(val)} type="email"></DefaultInput>
+            <DefaultInput text="PASSWORD" onChange={val=>setPassword(val)} type="password" placeholder = ""></DefaultInput>
             <span className="login-text">
               <span>forgot your password?</span>
             </span>
@@ -59,6 +67,13 @@ const Login = (props:any) => {
           </div>
         </div>
       </div>
+      {
+        modalState?(
+          <AlertModal headerText="Alert" bodyText="Invalid email or password" footerText="OK" onClose={()=>{setModalState(false)}} />
+          
+        ):null
+
+      }
       <style jsx>
         {`
           .login-container {

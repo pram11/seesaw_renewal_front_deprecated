@@ -9,10 +9,19 @@ import { useUserList } from '../../../services/users'
 import { useCookies } from 'react-cookie'
 import { useRecoilValue } from 'recoil'
 import { seesawTokenState } from '../../../states'
+import AlertModal from '../../../components/modal/AlertModal'
+import { isMobile } from '../../../utils/common'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM']);
+  const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
+  useEffect(()=>{
+    if (cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM==="true"||cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM===undefined){
+      setDesktopOnlyAlert(true);
+    }
   
+  },[]);
  
   return (
     <>
@@ -49,24 +58,30 @@ const AdminUserList = (props) => {
                     검색
                 </button>
               </form>
+              {isMobile()&&isSidebarOpen?null:
               <div className="adminuser-list-container1">
-                  <AdminUserTable></AdminUserTable>
-                <div className="adminuser-list-button-group">
-                  <AdminButton
-                    text="사용자 추가"
-                    rootClassName="admin-button-root-class-name"
-                  ></AdminButton>
-                  <AdminButton
-                    text="선택 삭제"
-                    rootClassName="admin-button-root-class-name1"
-                    type="red"
-                  ></AdminButton>
-                </div>
-              </div>
+              <AdminUserTable></AdminUserTable>
+            <div className="adminuser-list-button-group">
+              <AdminButton
+                text="사용자 추가"
+                rootClassName="admin-button-root-class-name"
+              ></AdminButton>
+              <AdminButton
+                text="선택 삭제"
+                rootClassName="admin-button-root-class-name1"
+                type="red"
+              ></AdminButton>
+            </div>
+          </div>
+              }
+              
             </div>
           </div>
         </div>
       </div>
+      {
+      desktopOnlyAlert?
+      <AlertModal headerText='알림' bodyText='데스크탑에 최적화된 화면입니다. 데스크탑을 이용하여 설정 바랍니다.' onClose={()=>{setDesktopOnlyAlert(false);setCookie("ADMIN_DESKTOPONLY_ALERT_CONFIRM","false")}}/>:null}
       <style jsx>
         {`
           .adminuser-list-container {

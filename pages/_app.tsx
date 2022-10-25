@@ -17,26 +17,37 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 App.getInitialProps = async (appContext:AppContext) =>{
-  function getCookie(key: any) {
-    let result = null;
-// cookie log를 찍어보면 ;로 구분해서 string 값으로 들어오기 때문에 split으로 나눈다.
-    let cookie = ctx?.ctx?.req?.headers?.cookie?.split(";");
-    cookie.some(function (item: any) {
-        // 공백을 제거
-        item = item.replace(" ", "");
+//   function getCookie(key: any) {
+//     let result = null;
+// // cookie log를 찍어보면 ;로 구분해서 string 값으로 들어오기 때문에 split으로 나눈다.
+//     let cookie = ctx?.ctx?.req?.headers?.cookie?.split(";");
+//     cookie.some(function (item: any) {
+//         // 공백을 제거
+//         item = item.replace(" ", "");
 
-        let dic = item.split("=");
+//         let dic = item.split("=");
 
-        if (key === dic[0]) {
-            result = dic[1];
-            return true; // break;
-        }
-    });
-    return result;
-  }
+//         if (key === dic[0]) {
+//             result = dic[1];
+//             return true; // break;
+//         }
+//     });
+//     return result;
+//   }
   
-  return {};
+//   return {};
+const appProps = await App.getInitialProps(appContext);
   
+//userAgent
+const userAgent = await appContext.ctx.req ? appContext.ctx.req?.headers['user-agent'] : navigator.userAgent
+
+//Mobile
+const mobile = await userAgent?.indexOf('Mobi')
+
+//Mobile in pageProps
+appProps.pageProps.isMobile = await (mobile !== -1) ? true : false;
+
+return { ...appProps }
 }
 
 export default MyApp
