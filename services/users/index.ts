@@ -26,23 +26,16 @@ const useSignIn=(email:string,password:string)=>{
         setTokenCookie("SEESAW_ACCESS_TOKEN",response.headers.get("Authorization"),{path:"/"});
         setTokenCookie("SEESAW_REFRESH_TOKEN",response.headers.get("RefreshToken"),{path:"/"});
         return response.text()
-    },{enabled:false})
+    },{enabled:false,retry:false})
 }
 
 
 const useUserList = (Q:{
-    name:string,
-    id:string,
-    passport_num:string,
-    phonenum:string,
-    email:string
+    queryType:"byId"|"byEmail"|"byName",
+    queryValue:string
 })=> {
     console.log("useUserList Requested",Q);
-    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN']);
-    // let query:string = Object.keys(Q)
-	// .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(query[k])) 
-	// .join('&'); 
-    // console.log("query",query);
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN'])
     return useQuery(["getUserList"],async ()=>{
     
     const response = await fetch(`${apiAddr}/user`,{

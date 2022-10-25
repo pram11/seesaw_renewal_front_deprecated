@@ -5,24 +5,33 @@ import AdminTableHeader from './TableHeader'
 import AdminTableRow from './TableRow'
 
 const AdminUserTable = (props) => {
+  
   const[userList, setUserList] = useState([
     {
-      id:1,
-      email:"test@gmail.com",
-      name:"Ronald K.Edwards",
-      passport_id:"A12344321",
-      alien_regenum:"123456-4321234",
-      phonenum:"010-1234-4321",
-      create_date:"2022/08/20 10:00:00",
+      address: "test",
+      addressExtra:"atesdffdas",
+      alienRegeNum:null,
+      birthdate:"2022-03-21T00:00:00.000+00:00",
+      createDate: "2022-06-30T11:24:12.484+00:00",
+      email: "an62071@gmail.com",
+      id: 2,
+      latitude: 1.12331,
+      longitude: 3.12123,
+      name: "test123",
+      nickname: "test",
+      passportID: null,
+      passwordUpdateDate: "2022-06-30T11:24:12.451+00:00",
+      phonenum: "+82-010-1234-4321",
+      sex: "male",
+      sido: "test",
+      sigungu: "123123",
+      updateDate: "2022-06-30T11:24:12.484+00:00",
       isSelected:false
     }//mock
   ]);
   const userListRequest = useUserList({
-    name: '',
-    id: '',
-    passport_num: '',
-    phonenum: '',
-    email: ''
+    queryType:'byName',
+    queryValue:""
   })
   if (userListRequest.status==='loading') {
     return <div>loading</div>
@@ -35,6 +44,9 @@ const AdminUserTable = (props) => {
     console.log("response data:",userListRequest.data)
     // setUserList(userListRequest.data)
   }
+  useEffect(()=>{
+    setUserList(userListRequest.data)
+  },[])
 
   const setSelected = (id,val)=>{
     console.log("checked:",val)
@@ -61,10 +73,10 @@ const AdminUserTable = (props) => {
             item_id={item.id.toString()}
             email={item.email}
             name={item.name}
-            passport_id={item.passport_id}
-            alien_regenum={item.alien_regenum}
+            passport_id={item.passportID===null?undefined:item.passportID}
+            alien_regenum={item.alienRegeNum===null?undefined:item.alienRegeNum}
             phonenum = {item.phonenum}
-            create_date = {item.create_date}
+            create_date = {item.createDate.slice(0,10)+" "+item.createDate.slice(11,19)}
             getSelected = {(val)=>setSelected(item.id,val)}
             key={"admin-table-row-"+item.id}
           />)
