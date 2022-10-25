@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useUserList } from '../../../services/users';
 
 import AdminTableHeader from './TableHeader'
 import AdminTableRow from './TableRow'
@@ -16,6 +17,25 @@ const AdminUserTable = (props) => {
       isSelected:false
     }//mock
   ]);
+  const userListRequest = useUserList({
+    name: '',
+    id: '',
+    passport_num: '',
+    phonenum: '',
+    email: ''
+  })
+  if (userListRequest.status==='loading') {
+    return <div>loading</div>
+  }
+  if (userListRequest.status==='error') {
+    console.log("error",userListRequest.error)
+
+  }
+  if (userListRequest.status==='success') { 
+    console.log("response data:",userListRequest.data)
+    // setUserList(userListRequest.data)
+  }
+
   const setSelected = (id,val)=>{
     console.log("checked:",val)
     let newList = userList;

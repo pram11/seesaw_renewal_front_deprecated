@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 
 import Header from '../../components/header'
@@ -6,8 +6,29 @@ import DefaultInput from '../../components/default-input'
 import SocialButtons from '../../components/social-buttons'
 import ButtonLg from '../../components/ButtonLg'
 import { useRouter } from 'next/router'
+import { useCookies } from 'react-cookie'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { seesawTokenState } from '../../states'
+import { useSignIn } from '../../services/users'
+import { getUserRoles, useUserRoles } from '../../utils/user'
 
 const Login = (props:any) => {
+  const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN']);
+  const [seesawToken,setSeesawTokenState]= useRecoilState(seesawTokenState);
+  const {refetch:signIn} = useSignIn("an6207@gmail.com","test12351312!");
+  const getUserRoles = useUserRoles();
+  const onClickSignIn = async () => {
+    const response = await signIn();
+    console.log(response);
+    if (response.status==="success"){
+      const roles = getUserRoles();
+      console.log(roles)
+    }
+    //temp
+    // setCookie("SEESAW_TOKEN","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZXMiOlsiQURNSU4iLCJDSEFUX0NIQVRST09NX0ZVTExBQ0NFU1NcciIsIkNIQVRfQ09OVEVOVFNfRlVMTEFDQ0VTU1xyIiwiQ0hBVF9DT05URU5UU19SRUFEQUJMRVxyIiwiQ0hBVF9DT05URU5UU19XUklURUFCTEVcciIsIkNIQVRfTVlDSEFUUk9PTV9SRUFEQUJMRVxyIiwiQ0hBVF9NWUNIQVRST09NX1dSSVRFQUJMRVxyIiwiRklMRV9BRE1JTl9ERUxFVEFCTEVcciIsIkZJTEVfQURNSU5fRURJVEFCTEVcciIsIlVTRVJfQVVUSE9SSVpBVElPTl9VUERBVEUiLCJXT1JLX0FETUlOX0RFTEVURUFCTEVcciIsIldPUktfREVMRVRFQUJMRVxyIiwiV09SS19FRElUQUJMRVxyIiwiV09SS19SRUFEQUJMRVxyIiwiV09SS19SRVNVTUVfUkVBREFCTEVcciIsIldPUktfUkVTVU1FX1NVUEVSX1JFQURBQkxFXHIiLCJXT1JLX1JFU1VNRV9XUklURUFCTEVcciIsIldPUktfV1JJVEVBQkxFXHIiXSwiaWF0IjoxNjY2NDQyNDc3LCJleHAiOjE2NjY1Mjg4Nzd9.EM79VUPm70WWdD2W4KPodUOiC5UqbOworxJSltvT_DR46xEvJWWGP2yw9wtqTmsbNZmQfBTs_5furrbrHk_Uew")
+    // setSeesawTokenState("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZXMiOlsiQURNSU4iLCJDSEFUX0NIQVRST09NX0ZVTExBQ0NFU1NcciIsIkNIQVRfQ09OVEVOVFNfRlVMTEFDQ0VTU1xyIiwiQ0hBVF9DT05URU5UU19SRUFEQUJMRVxyIiwiQ0hBVF9DT05URU5UU19XUklURUFCTEVcciIsIkNIQVRfTVlDSEFUUk9PTV9SRUFEQUJMRVxyIiwiQ0hBVF9NWUNIQVRST09NX1dSSVRFQUJMRVxyIiwiRklMRV9BRE1JTl9ERUxFVEFCTEVcciIsIkZJTEVfQURNSU5fRURJVEFCTEVcciIsIlVTRVJfQVVUSE9SSVpBVElPTl9VUERBVEUiLCJXT1JLX0FETUlOX0RFTEVURUFCTEVcciIsIldPUktfREVMRVRFQUJMRVxyIiwiV09SS19FRElUQUJMRVxyIiwiV09SS19SRUFEQUJMRVxyIiwiV09SS19SRVNVTUVfUkVBREFCTEVcciIsIldPUktfUkVTVU1FX1NVUEVSX1JFQURBQkxFXHIiLCJXT1JLX1JFU1VNRV9XUklURUFCTEVcciIsIldPUktfV1JJVEVBQkxFXHIiXSwiaWF0IjoxNjY2NDQyNDc3LCJleHAiOjE2NjY1Mjg4Nzd9.EM79VUPm70WWdD2W4KPodUOiC5UqbOworxJSltvT_DR46xEvJWWGP2yw9wtqTmsbNZmQfBTs_5furrbrHk_Uew");
+    // console.log("SEESAW TOKEN GAINED",seesawToken,cookies.SEESAW_TOKEN);
+  }
   const router = useRouter();
   return (
     <>
@@ -33,7 +54,7 @@ const Login = (props:any) => {
           </div>
           <SocialButtons></SocialButtons>
           <div className="login-container3">
-            <ButtonLg text="SIGN IN" onClick={()=>{router.push("/signin")}}></ButtonLg>
+            <ButtonLg text="SIGN IN" onClick={()=>{onClickSignIn()}}></ButtonLg>
             <ButtonLg text="SIGN UP" onClick={()=>{router.push("/signup")}}></ButtonLg>
           </div>
         </div>

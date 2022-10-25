@@ -6,19 +6,14 @@ import AdminSidebar from '../../../components/admin/Sidebar'
 import AdminUserTable from '../../../components/admin/user/UserTable'
 import AdminButton from '../../../components/admin/Button'
 import { useUserList } from '../../../services/users'
+import { useCookies } from 'react-cookie'
+import { useRecoilValue } from 'recoil'
+import { seesawTokenState } from '../../../states'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
-  const userList = useUserList({
-    name: '',
-    id: '',
-    passport_num: '',
-    phonenum: '',
-    email: ''
-  })
   
-  console.log(userList);
-
+ 
   return (
     <>
       <div className="adminuser-list-container">
@@ -55,7 +50,7 @@ const AdminUserList = (props) => {
                 </button>
               </form>
               <div className="adminuser-list-container1">
-                <AdminUserTable></AdminUserTable>
+                  <AdminUserTable></AdminUserTable>
                 <div className="adminuser-list-button-group">
                   <AdminButton
                     text="사용자 추가"
