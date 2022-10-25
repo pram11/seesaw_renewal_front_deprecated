@@ -13,13 +13,13 @@ const Buttonlg = (props) => {
       <style jsx>
         {`
           .buttonlg-container {
+            padding:0;
             display: flex;
             position: relative;
           }
           .buttonlg-buttonlg {
-            top: 534px;
-            left: 15px;
-            width: calc(479px - 32px);
+            width:calc(479px - 32px);
+            max-width:calc(100% - 32px);
             height: 60px;
             display: flex;
             box-sizing: border-box;
@@ -84,6 +84,7 @@ Buttonlg.defaultProps = {
 Buttonlg.propTypes = {
   text: PropTypes.string,
   rootClassName: PropTypes.string,
+  onClick: PropTypes.func,
 }
 
 export default Buttonlg
