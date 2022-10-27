@@ -15,10 +15,11 @@ const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM']);
   const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
-  
-  const[userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [queryType, setQueryType] = useState<"byId"|"byName"|"byEmail">("byName");
   const [queryValue, setQueryValue] = useState("");
+  const [updateUserModal,setUpdateUserModal] = useState(false);
+  const [createUserModal,setCreateUserModal] = useState(false);
   const userListRequest = useUserList({
     queryType:queryType,
     queryValue:queryValue
