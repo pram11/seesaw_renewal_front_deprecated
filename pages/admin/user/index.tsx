@@ -16,42 +16,21 @@ const AdminUserList = (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM']);
   const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
   
-  const[userList, setUserList] = useState([
-    {
-      address: "test",
-      addressExtra:"atesdffdas",
-      alienRegeNum:null,
-      birthdate:"2022-03-21T00:00:00.000+00:00",
-      createDate: "2022-06-30T11:24:12.484+00:00",
-      email: "an62071@gmail.com",
-      id: 2,
-      latitude: 1.12331,
-      longitude: 3.12123,
-      name: "test123",
-      nickname: "test",
-      passportID: null,
-      passwordUpdateDate: "2022-06-30T11:24:12.451+00:00",
-      phonenum: "+82-010-1234-4321",
-      sex: "male",
-      sido: "test",
-      sigungu: "123123",
-      updateDate: "2022-06-30T11:24:12.484+00:00",
-      isSelected:false
-    }//mock
-  ]);
+  const[userList, setUserList] = useState([]);
+  const [queryType, setQueryType] = useState<"byId"|"byName"|"byEmail">("byName");
+  const [queryValue, setQueryValue] = useState("");
   const userListRequest = useUserList({
-    queryType:'byName',
-    queryValue:""
+    queryType:queryType,
+    queryValue:queryValue
   })
   
-  
   useEffect(()=>{
-    if (userListRequest.status==='success') { 
-      console.log("response data:",userListRequest.data)
+    if(userListRequest.status==="success"){
       setUserList(userListRequest.data)
+
     }
-    // setUserList(userListRequest.data)
-  },[])
+  },[userListRequest.data])
+   
   useEffect(()=>{
     if (cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM==="true"||cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM===undefined){
       setDesktopOnlyAlert(true);
@@ -70,6 +49,10 @@ const AdminUserList = (props) => {
     console.log("newList:",newList)
     setUserList(newList)
     console.log(userList)
+  }
+  const onSelectQueryType = (val)=>{
+    console.log("onSelectQueryType",val)
+    // setQueryType(val);
   }
  
   return (
@@ -93,12 +76,13 @@ const AdminUserList = (props) => {
             {isSidebarOpen?<AdminSidebar/>:null}
             <div className="adminuser-list-group113">
               <form className="adminuser-list-form">
-                <DropDownSelect options={[{id:"1",value:"사용자명"}]} defaultValue={"1"}></DropDownSelect>
+                <DropDownSelect options={[{id:"byName",value:"사용자명"},{id:"byId",value:"회원번호"}]} defaultValue={"byId"} onSelect={(event)=>{onSelectQueryType(event)}}></DropDownSelect>
                 <div className="adminuser-list-group47">
                   <input
                     type="text"
                     placeholder="placeholder"
                     className="adminuser-list-textinput input"
+                    onChange={(evt)=>{setQueryValue(evt.target.value)}}
                   />
                 </div>
                 

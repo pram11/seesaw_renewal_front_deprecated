@@ -35,7 +35,7 @@ const useUserList = (Q:{
     queryValue:string
 })=> {
     console.log("useUserList Requested",Q);
-    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN'])
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
     return useQuery(["getUserList"],async ()=>{
     
     const response = await fetch(`${apiAddr}/user`,{
@@ -44,11 +44,13 @@ const useUserList = (Q:{
         credentials:"same-origin",
         headers:{
             "Content-Type":"application/json",
-            "Authorization":cookies.SEESAW_TOKEN
+            "Authorization":cookies.SEESAW_ACCESS_TOKEN
         },
     })
-    return response.json()
-})}
+    
+
+    return await response.json()
+},{retry:false,enabled:true})}
 
 
 
