@@ -125,8 +125,16 @@ const AdminUserList = (props) => {
       </div>
       {
       desktopOnlyAlert?
-      <AlertModal headerText='알림' bodyText='데스크탑에 최적화된 화면입니다. 데스크탑을 이용하여 설정 바랍니다.' onClose={()=>{setDesktopOnlyAlert(false);setCookie("ADMIN_DESKTOPONLY_ALERT_CONFIRM","false")}}/>:null}
-      {updateUserModal?<UpdateUserModal onClose={()=>{setUpdateUserModal(false)}} userId={userToUpdate}></UpdateUserModal>:null}
+        <AlertModal 
+        headerText='알림' 
+        bodyText='데스크탑에 최적화된 화면입니다. 데스크탑을 이용하여 설정 바랍니다.' 
+        onClose={()=>{setDesktopOnlyAlert(false);setCookie("ADMIN_DESKTOPONLY_ALERT_CONFIRM","false")}}/>
+      :null}
+      {updateUserModal?
+          <UpdateUserModal 
+          onClose={()=>{setUpdateUserModal(false)}} 
+          userId={userToUpdate}/>
+        :null}
       <style jsx>
         {`
           .adminuser-list-container {

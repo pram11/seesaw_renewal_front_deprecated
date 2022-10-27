@@ -10,27 +10,27 @@ type AdminTableRowProps = {
   email:string;
   create_date:string;
   getSelected:Function;
-  onClick:Function;
+  onClick:React.MouseEventHandler;
 }
 const AdminTableRow = (props:AdminTableRowProps) => {
   console.log("item loaded:",props)
   return (
     <>
-      <tr className="admin-table-row-group2" onClick={props.onClick}>
+      <tr className="admin-table-row-group2" >
         <td className="admin-table-row-frame112">
           <div className="admin-table-row-checbox">
             <input type="checkbox" onChange={(evt)=>props.getSelected(evt.target.checked)} />
           </div>
         </td>
-        <td className="admin-table-row-frame1121">
+        <td className="admin-table-row-frame1121" onClick={props.onClick}>
           <span className="admin-table-row-text">{props.item_id}</span>
         </td>
-        <td className="admin-table-row-text1">{props.name}</td>
-        <td className="admin-table-row-text2">{props.passport_id}</td>
-        <td className="admin-table-row-text3">{props.alien_regenum}</td>
-        <td className="admin-table-row-text4">{props.phonenum}</td>
-        <td className="admin-table-row-text5">{props.email}</td>
-        <td className="admin-table-row-text6">{props.create_date}</td>
+        <td className="admin-table-row-text1" onClick={props.onClick} >{props.name}</td>
+        <td className="admin-table-row-text2" onClick={props.onClick}>{props.passport_id}</td>
+        <td className="admin-table-row-text3" onClick={props.onClick}>{props.alien_regenum}</td>
+        <td className="admin-table-row-text4" onClick={props.onClick}>{props.phonenum}</td>
+        <td className="admin-table-row-text5" onClick={props.onClick}>{props.email}</td>
+        <td className="admin-table-row-text6" onClick={props.onClick}>{props.create_date}</td>
       </tr>
       <style jsx>
         {`
