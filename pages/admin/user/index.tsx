@@ -10,6 +10,7 @@ import { useCookies } from 'react-cookie'
 import { useRecoilValue } from 'recoil'
 import { seesawTokenState } from '../../../states'
 import AlertModal from '../../../components/modal/AlertModal'
+import UpdateUserModal from "../../../components/admin/user/UpdateUserModal";
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
@@ -20,6 +21,7 @@ const AdminUserList = (props) => {
   const [queryValue, setQueryValue] = useState("");
   const [updateUserModal,setUpdateUserModal] = useState(false);
   const [createUserModal,setCreateUserModal] = useState(false);
+  const [userToUpdate,setUserToUpdate] = useState(null);
   const userListRequest = useUserList({
     queryType:queryType,
     queryValue:queryValue
@@ -93,10 +95,19 @@ const AdminUserList = (props) => {
                 </button>
               </form>
               <div className="adminuser-list-container1">
-              <AdminUserTable userList={userList} setSelected={(id,val)=>{setSelected(id,val)}}></AdminUserTable>
+              <AdminUserTable userList={userList} setSelected={(id,val)=>{setSelected(id,val)}} onClick={
+                (id)=>{
+                  console.log("click:",id)
+                  setUserToUpdate(id);
+                  setUpdateUserModal(true);
+                }
+              }></AdminUserTable>
             <div className="adminuser-list-button-group">
               <AdminButton
                 text="사용자 추가"
+                onClick={()=>{
+                  setCreateUserModal(true)
+                }}
                 rootClassName="admin-button-root-class-name"
               ></AdminButton>
               <AdminButton
@@ -115,6 +126,7 @@ const AdminUserList = (props) => {
       {
       desktopOnlyAlert?
       <AlertModal headerText='알림' bodyText='데스크탑에 최적화된 화면입니다. 데스크탑을 이용하여 설정 바랍니다.' onClose={()=>{setDesktopOnlyAlert(false);setCookie("ADMIN_DESKTOPONLY_ALERT_CONFIRM","false")}}/>:null}
+      {updateUserModal?<UpdateUserModal onClose={()=>{setUpdateUserModal(false)}} userId={userToUpdate}></UpdateUserModal>:null}
       <style jsx>
         {`
           .adminuser-list-container {

@@ -10,12 +10,13 @@ type AdminTableRowProps = {
   email:string;
   create_date:string;
   getSelected:Function;
+  onClick:Function;
 }
 const AdminTableRow = (props:AdminTableRowProps) => {
   console.log("item loaded:",props)
   return (
     <>
-      <tr className="admin-table-row-group2">
+      <tr className="admin-table-row-group2" onClick={props.onClick}>
         <td className="admin-table-row-frame112">
           <div className="admin-table-row-checbox">
             <input type="checkbox" onChange={(evt)=>props.getSelected(evt.target.checked)} />
@@ -225,6 +226,7 @@ AdminTableRow.defaultProps = {
   item_id: '1',
   phonenum: '010-1234-4321',
   alien_regenum: '123432-1234556',
+  onClick: () => {},
 }
 
 AdminTableRow.propTypes = {
@@ -237,6 +239,7 @@ AdminTableRow.propTypes = {
   item_id: PropTypes.string,
   phonenum: PropTypes.string,
   alien_regenum: PropTypes.string,
+  onClick: PropTypes.func,
 }
 
 export default AdminTableRow

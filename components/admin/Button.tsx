@@ -6,7 +6,8 @@ type ButtonTypeEnum = 'primary'|'green'|'yellow'|'red'|'light'|'dark'|'blue'
 const AdminButton = (props:{
   rootClassName: string
   text: string,
-  type: ButtonTypeEnum
+  type: ButtonTypeEnum,
+  onClick: Function
 }) => {
   return (
     <>
@@ -64,7 +65,8 @@ const AdminButton = (props:{
 AdminButton.defaultProps = {
   rootClassName: '',
   text: 'Text',
-  type:'primary'
+  type:'primary',
+  onClick: () => {}
 }
 
 

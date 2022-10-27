@@ -6,7 +6,8 @@ import AdminTableRow from './TableRow'
 
 type UserTableProps = {
   userList: any,
-  setSelected:Function
+  setSelected:Function,
+  onClick:Function,
 }
 
 const AdminUserTable = (props:UserTableProps) => {
@@ -30,6 +31,7 @@ const AdminUserTable = (props:UserTableProps) => {
             create_date = {item.createDate.slice(0,10)+" "+item.createDate.slice(11,19)}
             getSelected = {(val)=>props.setSelected(item.id,val)}
             key={"admin-table-row-"+item.id}
+            onClick={()=>{props.onClick(item.id)}}
           />)
           })}
         </tbody>
@@ -63,11 +65,13 @@ const AdminUserTable = (props:UserTableProps) => {
 }
 AdminUserTable.propTypes = {
   userList: PropTypes.array.isRequired,
-  setSelected: PropTypes.func.isRequired
+  setSelected: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 AdminUserTable.defaultProps = {
   userList: [],
-  setSelected: ()=>{}
+  setSelected: ()=>{},
+  onClick: ()=>{}
 }
 
 export default AdminUserTable
