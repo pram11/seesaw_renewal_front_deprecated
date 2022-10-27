@@ -10,18 +10,67 @@ import { useCookies } from 'react-cookie'
 import { useRecoilValue } from 'recoil'
 import { seesawTokenState } from '../../../states'
 import AlertModal from '../../../components/modal/AlertModal'
-import { isMobile } from '../../../utils/common'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM']);
   const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
+  
+  const[userList, setUserList] = useState([
+    {
+      address: "test",
+      addressExtra:"atesdffdas",
+      alienRegeNum:null,
+      birthdate:"2022-03-21T00:00:00.000+00:00",
+      createDate: "2022-06-30T11:24:12.484+00:00",
+      email: "an62071@gmail.com",
+      id: 2,
+      latitude: 1.12331,
+      longitude: 3.12123,
+      name: "test123",
+      nickname: "test",
+      passportID: null,
+      passwordUpdateDate: "2022-06-30T11:24:12.451+00:00",
+      phonenum: "+82-010-1234-4321",
+      sex: "male",
+      sido: "test",
+      sigungu: "123123",
+      updateDate: "2022-06-30T11:24:12.484+00:00",
+      isSelected:false
+    }//mock
+  ]);
+  const userListRequest = useUserList({
+    queryType:'byName',
+    queryValue:""
+  })
+  
+  
+  useEffect(()=>{
+    if (userListRequest.status==='success') { 
+      console.log("response data:",userListRequest.data)
+      setUserList(userListRequest.data)
+    }
+    // setUserList(userListRequest.data)
+  },[])
   useEffect(()=>{
     if (cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM==="true"||cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM===undefined){
       setDesktopOnlyAlert(true);
     }
   
   },[]);
+
+  const setSelected = (id,val)=>{
+    console.log("checked:",val)
+    let newList = userList;
+    newList.forEach((item)=>{
+      if(item.id===id){
+        item.isSelected = val;
+      }
+    })
+    console.log("newList:",newList)
+    setUserList(newList)
+    console.log(userList)
+  }
  
   return (
     <>
@@ -58,9 +107,8 @@ const AdminUserList = (props) => {
                     검색
                 </button>
               </form>
-              {isMobile()&&isSidebarOpen?null:
               <div className="adminuser-list-container1">
-              <AdminUserTable></AdminUserTable>
+              <AdminUserTable userList={userList} setSelected={(id,val)=>{setSelected(id,val)}}></AdminUserTable>
             <div className="adminuser-list-button-group">
               <AdminButton
                 text="사용자 추가"
@@ -73,7 +121,7 @@ const AdminUserList = (props) => {
               ></AdminButton>
             </div>
           </div>
-              }
+              
               
             </div>
           </div>
