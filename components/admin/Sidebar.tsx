@@ -1,31 +1,75 @@
 import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
-
+import {useMenuList} from "../../services/menus"
 import AdminSidebarItem from './SidebarItem'
+import { useRouter } from 'next/router'
 type SidebarItem ={
-  id:string,
-  text:string,
-  targetURL:string,
+  code:string,
+  label:string,
+  url:string,
+  level:number,
+  parent:string,
 }
-const AdminSidebar = (props) => {
-  const [sidebarItemList,setSidebarItemList] = useState([
-    {id:"user",text:"사용자관리",targetURL:"/admin/user"},
-    {id:"code",text:"코드관리",targetURL:"/admin/code"},
-    {id:"file",text:"파일관리",targetURL:"/admin/file"},
-    {id:"role",text:"권한관리",targetURL:"/admin/role"},
-    {id:"signout",text:"로그아웃",targetURL:"/signout"}
+type SidebarProps = {
+  initialSidebarParentCode: string,
+  initialSidebarLevel: number,
+}
+const AdminSidebar = (props:SidebarProps) => {
+  const [sidebarItemList,setSidebarItemList] = useState([])
+  const router = useRouter()
+  const [parentMenuCode,setParentMenuCode] = useState<string|null>(null);
+  const [menuLevel,setMenuLevel] = useState(1);
+  const [prevCode,setPrevCode] = useState<string|null>(null);
+  const getMenuList = useMenuList({"parent":parentMenuCode,"level":menuLevel});
 
-  ])
   useEffect(()=>{
+    console.log("useEffect")
+    if (getMenuList.status==="success"){
+      setSidebarItemList(getMenuList.data);
+    }
+  },[getMenuList.data]);
+  // if (getMenuList.data){  
+  //   setSidebarItemList(getMenuList.data);
+  // }
+  // if (getMenuList.status==="success"&&getMenuList.data!=sidebarItemList){
+  //   setSidebarItemList(getMenuList.data);
+  // }
 
-  },[])
+  console.log(getMenuList.status)
+    getMenuList.refetch()
+  const moveOrCallNextStep = async (item:SidebarItem) => {
+    console.log("moveOrCallNextStep",item)
+    if (item.url===null){
+      setPrevCode(parentMenuCode);
+      setParentMenuCode(item.code);
+      setMenuLevel(item.level + 1);
+      await getMenuList.refetch();
+      if (getMenuList.status==="success"){
+
+        setSidebarItemList(getMenuList.data);
+      }
+    }else{
+      router.push(item.url);
+    }
+  }
+  const moveBack = async()=>{
+    setParentMenuCode(prevCode);
+    console.log("moveBack")
+    setMenuLevel(menuLevel - 1);
+    await getMenuList.refetch();
+    if (getMenuList.status==="success"){
+      setSidebarItemList(getMenuList.data);
+    }
+  }
+
   return (
     <>
       <div className={`admin-sidebar-frame79 ${props.rootClassName} `}>
+        {parentMenuCode!==null&&(<AdminSidebarItem id={"GO_BACK"} text="뒤로가기" onClick={()=>moveBack()} />)}
         {
           sidebarItemList.map((item)=>{
-            return (<AdminSidebarItem text={item.text} onClick={()=>{location.href = item.targetURL}} id={item.id}/>)
+            return (<AdminSidebarItem text={item.label} onClick={()=>moveOrCallNextStep(item)} id={item.code}/>)
           })
         }
       </div>
@@ -51,11 +95,13 @@ const AdminSidebar = (props) => {
 }
 
 AdminSidebar.defaultProps = {
-  rootClassName: '',
+  initialSidebarParentCode: null,
+  initialSidebarLevel: 1,
 }
 
 AdminSidebar.propTypes = {
-  rootClassName: PropTypes.string,
+  initialSidebarParentCode: PropTypes.string,
+  initialSidebarLevel: PropTypes.number,
 }
 
 export default AdminSidebar
