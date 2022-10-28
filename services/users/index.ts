@@ -47,7 +47,10 @@ const useUserList = (Q:{
             "Authorization":cookies.SEESAW_ACCESS_TOKEN
         },
     })
-    
+    if (!response.ok){
+        console.warn("Network response Not Succeed")
+        throw new Error("Network response not succeed");
+    }
 
     return await response.json()
 },{retry:false,enabled:true})}

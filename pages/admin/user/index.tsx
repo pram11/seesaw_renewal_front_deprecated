@@ -28,6 +28,7 @@ const AdminUserList = (props) => {
   })
   
   useEffect(()=>{
+    console.log("userListRequest",userListRequest.status)
     if(userListRequest.status==="success"){
       setUserList(userListRequest.data)
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
+import PasswordUpdateInput from './PasswordUpdateInput';
 
 export type formProps = {
     title: string,
@@ -28,10 +29,25 @@ export type inputItem={
 
 const UserFormInput = ({id,label,type,value,onChange,required}:inputItem) => {
     const [inputValue, setInputValue] = useState(value);
+    // const changePhoneNumber = (id:string,value:string) => {
+    //     const newValue = phoneNumDashInsert(value);
+    //     setInputValue(newValue);
+    //     onChange(id,newValue);
+
+    // }
     const onChangeValue = (id:string,evt:React.ChangeEvent<HTMLInputElement>) => {
+        console.log("type:",type,"evt.target.value:",evt.target.value)
+        // if (type === "phonenum") {  
+        //     console.log("onPhonenum ChangeValue id:",id,"value:",evt.target.value)
+        //     changePhoneNumber(id,evt.target.value);
+        // } else {
+
         setInputValue(evt.target.value);
         onChange(id,evt.target.value)
+        // }
+        
     }
+
 
     return (
         <>
@@ -68,6 +84,20 @@ const UserFormInput = ({id,label,type,value,onChange,required}:inputItem) => {
                 .form-item-input[type="text"]:invalid {
                     border-color: #dc3545;
                 }
+                .form-item-input[type="phonenum"] {
+                    width: 100%;
+                    padding: 0.5rem;
+                    border: 1px solid #ccc;
+                    border-radius: 0.3rem;
+                    font-size: 1rem;
+                }
+                .form-item-input[type="phonenum"]:focus {
+                    outline: none;
+                    border-color: #007bff;
+                }
+                .form-item-input[type="phonenum"]:invalid {
+                    border-color: #dc3545;
+                }
                 .form-item-input[type="email"] {
                     width: 100%;
                     padding: 0.5rem;
@@ -91,7 +121,11 @@ const UserFormInput = ({id,label,type,value,onChange,required}:inputItem) => {
 }
 
 const UpdateUserForm = ({title,description,onSubmit,onChange,formItems,buttonText}:formProps) => {
-   
+    const phoneNumValidator = (value:string) => {
+        const regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+        return regExp.test(value);
+    }
+    
     console.log("UpdateUserForm props:",formItems)
     return (
         <div>
@@ -99,12 +133,21 @@ const UpdateUserForm = ({title,description,onSubmit,onChange,formItems,buttonTex
             {description && <p className='form-discription'>{description}</p>}
             <form onSubmit={(event)=>onSubmit(event)}>
                 {formItems.map((item)=>{
+
                     return (
                         <div>
                             <h2 className='form-item-title'>{item.title}</h2>
                             {item.description && <p className='form-item-description'>{item.description}</p>}
                             {item.items.map((inputitem)=>{
-                                return <UserFormInput 
+                                
+                                
+                                return inputitem.type==="password"?
+                                <PasswordUpdateInput 
+                                    id={inputitem.id}
+
+                                />
+                                :
+                                <UserFormInput 
                                     id={inputitem.id}
                                     label={inputitem.label}
                                     type={inputitem.type}
@@ -119,7 +162,6 @@ const UpdateUserForm = ({title,description,onSubmit,onChange,formItems,buttonTex
                         </div>
                     )}
                 )}
-                <button className='button-submit' type="submit">{buttonText}</button>
             </form>
             <style jsx>{`
                 .form-title {

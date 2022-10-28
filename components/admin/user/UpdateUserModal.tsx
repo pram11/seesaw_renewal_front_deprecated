@@ -16,7 +16,7 @@ const UpdateUserModal = (props) => {
             event.preventDefault();
             console.log("submit",event) 
             //데이터 발송
-
+            
         },
         onChange: (id:string,value:string) => {
             console.log("onChange id:",id,"value:",value)
@@ -46,9 +46,19 @@ const UpdateUserModal = (props) => {
             onChange: (id,val)=>onChangeInputValue(id,val)
             },
             {
+                id:"password",
+                label: "비밀번호",
+                type: "password",
+                value: "",
+                placeholder: "비밀번호를 입력하세요",
+                options: [{}],
+                required: false,
+                onChange: (id,val)=>onChangeInputValue(id,val)
+            },
+            {
             id:"phone",
             label: "전화번호",
-            type: "text",
+            type: "phonenum",
             value: "",
             placeholder: "전화번호를 입력하세요",
             options: [{}],
@@ -143,8 +153,25 @@ const UpdateUserModal = (props) => {
 
                  />
             }
-            footerText="닫기"
+            footerComponent={
+                <>
+                    <button onClick={()=>{console.log(inputValues)}} className="alert-modal-footer-button">{initUserFormContent.buttonText}</button>
+                    <style jsx>{`
+                    .alert-modal-footer-button{
+                        width:100%;
+                        height:40px;
+                        font-size:24px;
+                        padding:8px 16px;
+                        background-color:var(--dl-color-blue-blue600);
+                        color:#fff;
+                        border:none;
+                    }
+                    `}</style>
+                </>
+            }
+
             onClose={() => {
+                setInputValues([]);
                 props.onClose();
             }}
         />

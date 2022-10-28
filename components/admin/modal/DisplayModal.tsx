@@ -21,9 +21,13 @@ const AdminDisplayModal = (props) => {
                     {props.bodyComponent}
                 </div>
                 <div className="alert-modal-footer">
-                    <button className="alert-modal-footer-button" onClick={props.onClose}>
-                        {props.footerText}
-                    </button>
+                    {props.footerText!==undefined?
+                        <button className="alert-modal-footer-button" onClick={props.onClose}>
+                            {props.footerText}
+                        </button>
+                        :props.footerComponent
+                    }
+                    
                 </div>
             </div>
             <style jsx>
@@ -97,13 +101,15 @@ AdminDisplayModal.propTypes = {
     headerText: PropTypes.string.isRequired,
     bodyComponent: React.Component,
     onClose: PropTypes.func.isRequired,
-    footerText: PropTypes.string.isRequired
+    footerText: PropTypes.string,
+    footerComponent: React.Component,
 }
 AdminDisplayModal.defaultProps = {
     headerText: "Header Text",
     bodyComponent: <div>Body Component</div>,
     onClose: ()=>{},
-    footerText: "Footer Text"
+    footerText: undefined,
+    footerComponent:<button>Footer Text</button>,
 }
 
 export default AdminDisplayModal;

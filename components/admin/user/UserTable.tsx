@@ -5,7 +5,7 @@ import AdminTableHeader from './TableHeader'
 import AdminTableRow from './TableRow'
 
 type UserTableProps = {
-  userList: any,
+  userList: Array<any>,
   setSelected:Function,
   onClick:Function,
 }
