@@ -7,11 +7,11 @@ const AdminButton = (props:{
   rootClassName: string
   text: string,
   type: ButtonTypeEnum,
-  onClick: Function
+  onClick: React.MouseEventHandler
 }) => {
   return (
     <>
-        <button className={["admin-button-component",
+        <button onClick = {props.onClick} className={["admin-button-component",
         props.type==="primary"?"button-background-blue":"",
         props.type==="green"?"button-background-green":"",
         props.type==="yellow"?"button-background-yellow":"",

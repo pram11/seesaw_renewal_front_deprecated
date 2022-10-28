@@ -11,6 +11,7 @@ import { useRecoilValue } from 'recoil'
 import { seesawTokenState } from '../../../states'
 import AlertModal from '../../../components/modal/AlertModal'
 import UpdateUserModal from "../../../components/admin/user/UpdateUserModal";
+import CreateUserModal from '../../../components/admin/user/CreateUserModal'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
@@ -107,6 +108,7 @@ const AdminUserList = (props) => {
               <AdminButton
                 text="사용자 추가"
                 onClick={()=>{
+                  console.log("create user")
                   setCreateUserModal(true)
                 }}
                 rootClassName="admin-button-root-class-name"
@@ -135,6 +137,10 @@ const AdminUserList = (props) => {
           <UpdateUserModal 
           onClose={()=>{setUpdateUserModal(false)}} 
           userId={userToUpdate}/>
+        :null}
+      {createUserModal?
+          <CreateUserModal
+          onClose={()=>{setCreateUserModal(false)}}/>
         :null}
       <style jsx>
         {`

@@ -2,7 +2,7 @@ import React from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
 import { useQuery } from "react-query";
 import DisplayModal from "../modal/DisplayModal";
-import UpdateUserForm,{formProps,formItems,inputItems} from "./UpdateUserForm";
+import CreateUserForm,{formProps,formItem,inputItem} from "./CreateUserForm";
 
 
 
@@ -10,8 +10,8 @@ const UpdateUserModal = (props) => {
     const [inputValues, setInputValues] = React.useState([]);
     // 사용자 data load
     const initUserFormContent:formProps = {
-        title:"사용자 정보 수정",
-        description:"사용자 정보를 수정합니다.",
+        title:"사용자 추가",
+        description:"사용자를 추가합니다.",
         onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             console.log("submit",event) 
@@ -29,7 +29,7 @@ const UpdateUserModal = (props) => {
             id:"name",
             label: "이름",
             type: "text",
-            value: "홍길동",
+            value: "",
             placeholder: "이름을 입력하세요",
             options: [{}],
             required: true,
@@ -120,7 +120,7 @@ const UpdateUserModal = (props) => {
                 },
             ]
         }],
-        buttonText:"수정"
+        buttonText:"사용자 추가"
     }
     const [userFormItems,setUserFormItems] = React.useState<null|formItems>(initUserFormContent.formItems);
 
@@ -146,7 +146,7 @@ const UpdateUserModal = (props) => {
         <DisplayModal
             headerText="사용자 정보 조회 / 수정"
             bodyComponent={
-                <UpdateUserForm 
+                <CreateUserForm 
                     formItems={userFormItems}
                     onChange={onChangeInputValue}
                     onSubmit={initUserFormContent.onSubmit}
