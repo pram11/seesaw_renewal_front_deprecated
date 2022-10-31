@@ -12,12 +12,14 @@ import { seesawTokenState } from '../../../states'
 import AlertModal from '../../../components/modal/AlertModal'
 import UpdateUserModal from "../../../components/admin/user/UpdateUserModal";
 import CreateUserModal from '../../../components/admin/user/CreateUserModal'
+import { useCommonCodeChildList } from '../../../services/codes'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM']);
   const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
   const [userList, setUserList] = useState([]);
+  const [queryTypeList, setQueryTypeList] = useState([]);
   const [queryType, setQueryType] = useState<"byId"|"byName"|"byEmail">("byName");
   const [queryValue, setQueryValue] = useState("");
   const [updateUserModal,setUpdateUserModal] = useState(false);
@@ -27,6 +29,9 @@ const AdminUserList = (props) => {
     queryType:queryType,
     queryValue:queryValue
   })
+  const commonCodechildList = useCommonCodeChildList({
+    parentCode:"AU01"
+  });
   
   useEffect(()=>{
     console.log("userListRequest",userListRequest.status)
@@ -35,6 +40,25 @@ const AdminUserList = (props) => {
 
     }
   },[userListRequest.data])
+
+  useEffect(()=>{
+    console.log("commonCodeChildList Status:",commonCodechildList.status)
+    if (commonCodechildList.status === "success") {
+      console.log("queryTypeList: ",commonCodechildList.data)
+      let queryTypeList = commonCodechildList.data.map((item)=>{
+        return {
+          id:item.code,
+          value:item.label,
+        }
+      })
+      
+      setQueryTypeList(queryTypeList)
+    }
+    if (commonCodechildList.status === "error") {
+      console.error("error:",commonCodechildList.error)
+    }
+  },[commonCodechildList.data])
+
    
   useEffect(()=>{
     if (cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM==="true"||cookies.ADMIN_DESKTOPONLY_ALERT_CONFIRM===undefined){
@@ -81,7 +105,7 @@ const AdminUserList = (props) => {
             {isSidebarOpen?<AdminSidebar/>:null}
             <div className="adminuser-list-group113">
               <form className="adminuser-list-form">
-                <DropDownSelect options={[{id:"byName",value:"사용자명"},{id:"byId",value:"회원번호"}]} defaultValue={"byId"} onSelect={(event)=>{onSelectQueryType(event)}}></DropDownSelect>
+                <DropDownSelect options={queryTypeList}  onSelect={(event)=>{onSelectQueryType(event)}}></DropDownSelect>
                 <div className="adminuser-list-group47">
                   <input
                     type="text"

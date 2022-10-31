@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query"
 import { useCookies } from "react-cookie";
 import {getAPIServerAddress} from "../../utils/config";
 const apiAddr = getAPIServerAddress();
-function getCommonCodeParentList(){
+function useCommonCodeParentList(){
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
     return useQuery(['commoncodeparents'],async ()=>{
         const response = await fetch(`${apiAddr}/codes`,{
             method:"GET",
-            mode:"no-cors",
+            mode:"cors",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":cookies.SEESAW_ACCESS_TOKEN
@@ -21,25 +21,29 @@ function getCommonCodeParentList(){
         return response.json()
     })
 } 
-function getCommonCodeChildList(Q:{parentCode:string}){
-    return useQuery(['commoncodechildren'],async ()=>{
-        const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-        const response = await fetch(`${apiAddr}/code/${Q.parentCode}`,{
+function useCommonCodeChildList(Q:{parentCode:string}){
+    console.log("useCommonCodeChildList Requested",Q);
+    // const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
+    return useQuery(['getCommonCodeChildren'],async ()=>{
+        const response = await fetch(`${apiAddr}/code/${Q.parentCode}/children`,{
             method:"GET",
-            mode:"no-cors",
+            mode:"cors",
             headers:{
                 "Content-Type":"application/json",
-                "Authorization":cookies.SEESAW_ACCESS_TOKEN,
+                "Accept":"application/json"
+                // "Authorization":cookies.SEESAW_ACCESS_TOKEN,
             }
         })
         if (!response.ok){
-            console.warn("Network response Not Succeed")
-            throw new Error("Network response not succeed");
+            console.warn("Network response Not Succeed");
+            console.warn(response);
+            throw new Error("Network response not succeed")
+
         }
-        console.log(response.text)
-        return response.json()
+        let result = await response.json();
+        return result;
     })
 }
 
 
-export {getCommonCodeParentList}
+export {useCommonCodeParentList,useCommonCodeChildList}

@@ -6,7 +6,7 @@ type DropDownItem = {
 }
 const DropDownSelect = (props:{
   options:Array<DropDownItem>,
-  defaultValue:string|undefined,//id
+  // defaultValue:string|undefined,//id
   onSelect:ReactEventHandler<HTMLSelectElement>
 }) => {
   return (
@@ -15,7 +15,7 @@ const DropDownSelect = (props:{
     paddingLeft:"8px",
     paddingRight:"8px"
   }}>
-      <select className="drop-down-select-select-type" defaultValue={props.defaultValue} onChange={props.onSelect}>
+      <select className="drop-down-select-select-type"  onChange={props.onSelect}>
         {
           props.options.length===0?<option></option>:
           props.options.map((item)=>{

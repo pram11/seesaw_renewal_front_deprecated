@@ -33,7 +33,7 @@ const useMenuList = (Q:{
             "Authorization":cookies.SEESAW_ACCESS_TOKEN
         },
     })
-    return response.json()
+    return await response.json()
 },{enabled:false,retry:3})}
 
 export {useMenuList}

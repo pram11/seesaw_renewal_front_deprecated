@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import Header from '../../../components/header'
 import AdminSidebar from '../../../components/admin/Sidebar'
 import AdminUserTable from '../../../components/admin/UserTable'
 import AdminButton from '../../../components/admin/Button'
+import { useCommonCodeChildList } from '../../../services/codes'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
+  const [getSearchOptionList,setSearchOptionList] = useState("username");
+  useEffect(()=>{
+    const result = useCommonCodeChildList({parentCode:"AU01"});
+    console.log("result:",result);
+    setSearchOptionList(result.data);
 
+  }
+  ,[])
   return (
     <>
       <div className="adminuser-list-container">
