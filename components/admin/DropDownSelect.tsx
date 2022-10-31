@@ -20,7 +20,7 @@ const DropDownSelect = (props:{
           props.options.length===0?<option></option>:
           props.options.map((item)=>{
             return (
-              <option className="drop-down-select-select" id={item.id} >
+              <option className="drop-down-select-select" value={item.id} >
                 {item.value}
               </option>
             )

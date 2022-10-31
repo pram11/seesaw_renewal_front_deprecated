@@ -20,7 +20,7 @@ const AdminUserList = (props) => {
   const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
   const [userList, setUserList] = useState([]);
   const [queryTypeList, setQueryTypeList] = useState([]);
-  const [queryType, setQueryType] = useState<"byId"|"byName"|"byEmail">("byName");
+  const [queryType, setQueryType] = useState<string>("AUQ01");
   const [queryValue, setQueryValue] = useState("");
   const [updateUserModal,setUpdateUserModal] = useState(false);
   const [createUserModal,setCreateUserModal] = useState(false);
@@ -47,11 +47,11 @@ const AdminUserList = (props) => {
       console.log("queryTypeList: ",commonCodechildList.data)
       let queryTypeList = commonCodechildList.data.map((item)=>{
         return {
-          id:item.code,
+          id:item.id.code,
           value:item.label,
         }
       })
-      
+      console.log("queryTypeList: ",queryTypeList)
       setQueryTypeList(queryTypeList)
     }
     if (commonCodechildList.status === "error") {
@@ -79,11 +79,16 @@ const AdminUserList = (props) => {
     setUserList(newList)
     console.log(userList)
   }
-  const onSelectQueryType = (val)=>{
-    console.log("onSelectQueryType",val)
+  const onSelectQueryType = (evt)=>{
+    console.log("onSelectQueryType",evt.target)
+    setQueryType(evt.target.value);
     // setQueryType(val);
   }
- 
+  const submitSearchForm = (evt)=>{
+    evt.preventDefault();
+    console.log("submitSearchForm")
+    userListRequest.refetch();
+  }
   return (
     <>
       <div className="adminuser-list-container">
@@ -104,7 +109,7 @@ const AdminUserList = (props) => {
           <div className="adminuser-list-frame118">
             {isSidebarOpen?<AdminSidebar/>:null}
             <div className="adminuser-list-group113">
-              <form className="adminuser-list-form">
+              <form className="adminuser-list-form" onSubmit={submitSearchForm}>
                 <DropDownSelect options={queryTypeList}  onSelect={(event)=>{onSelectQueryType(event)}}></DropDownSelect>
                 <div className="adminuser-list-group47">
                   <input

@@ -31,14 +31,18 @@ const useSignIn=(email:string,password:string)=>{
 
 
 const useUserList = (Q:{
-    queryType:"byId"|"byEmail"|"byName",
+    queryType:string,
     queryValue:string
 })=> {
     console.log("useUserList Requested",Q);
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
     return useQuery(["getUserList"],async ()=>{
-    
-    const response = await fetch(`${apiAddr}/user`,{
+    if (Q.queryType!==""&&Q.queryValue!=="") {
+        var path = `${apiAddr}/user?${Q.queryType}=${Q.queryValue}`;
+    } else {
+        var path = `${apiAddr}/user`;
+    }
+    const response = await fetch(path,{
         method:"GET",
         mode:"cors",
         credentials:"same-origin",
@@ -53,7 +57,7 @@ const useUserList = (Q:{
     }
 
     return await response.json()
-},{retry:false,enabled:true})}
+},{retry:3,enabled:true})}
 
 
 
