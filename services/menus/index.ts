@@ -8,7 +8,7 @@ const useMenuList = (Q:{
     level:number|null
 })=> {
     console.log("useUserList Requested",Q);
-    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN'])
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
     return useQuery(["getMenuList"],async ()=>{
     var path = `${apiAddr}/code/menu`;
     if (Q.parent!==null||Q.level!==null) {
@@ -30,7 +30,7 @@ const useMenuList = (Q:{
         credentials:"same-origin",
         headers:{
             "Content-Type":"application/json",
-            "Authorization":cookies.SEESAW_TOKEN
+            "Authorization":cookies.SEESAW_ACCESS_TOKEN
         },
     })
     return response.json()
