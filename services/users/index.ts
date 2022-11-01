@@ -24,9 +24,7 @@ const useSignIn=(email:string,password:string)=>{
             throw new Error("Network response not succeed");
         }
         console.log(response.headers.get("Authorization"))
-        setTokenCookie("SEESAW_ACCESS_TOKEN",response.headers.get("Authorization"),{path:"/"});
-        setTokenCookie("SEESAW_REFRESH_TOKEN",response.headers.get("RefreshToken"),{path:"/"});
-        return response.text()
+        return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.text()}
     },{enabled:false,retry:false})
 }
 

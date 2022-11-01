@@ -10,25 +10,29 @@ import { useCookies } from 'react-cookie'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { seesawTokenState } from '../../states'
 import { useSignIn } from '../../services/users'
-import { useUserRoles } from '../../utils/user'
+import { getUserRoles, useUserRoles } from '../../utils/user'
 import AlertModal from '../../components/modal/AlertModal'
 
 const Login = (props:any) => {
   const router = useRouter();
-  const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN']);
+  const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN',"SEESAW_REFRESH_TOKEN"]);
   const [modalState,setModalState] = useState(false);
   const [email,setEmail] = React.useState(router.query.email===undefined?'':router.query.email.toString());
   const [password,setPassword] = React.useState("");
-  const {refetch:signIn} = useSignIn(email,password);
-  const getUserRoles = useUserRoles();
+  const signIn = useSignIn(email,password);
   const onClickSignIn = async () => {
-    const response = await signIn();
+    const response = await signIn.refetch();
     console.log(response);
     if (response.status==="success"){
-      const roles = getUserRoles();
+      setCookie("SEESAW_ACCESS_TOKEN", response.data.accessToken, { path: "/" });
+      setCookie("SEESAW_REFRESH_TOKEN",response.data.refreshToken,{path:"/"});
+      const roles = getUserRoles(response.data.accessToken!);
+
       if (roles.includes("ADMIN")){
+        console.log("admin")
         router.push("/admin/user");
       }else{
+        console.log("user")
         router.push("/chat");
       }
       console.log(roles)
@@ -41,6 +45,8 @@ const Login = (props:any) => {
     e.preventDefault();
     onClickSignIn();
   }
+  
+      // alert("로그인이 완료되었습니다.");))
   return (
     <>
       <div className="login-container">

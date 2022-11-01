@@ -24,12 +24,20 @@ export function isLogin(){
 export function useUserRoles(){
     const [cookie, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN']);
 
-    function getUserList(){
-        if (cookie.SEESAW_ACCESS_TOKEN===undefined){
+    async function getUserList(){
+        if (await cookie.SEESAW_ACCESS_TOKEN===undefined){
             return []
         }
-        return parseToken(sliceBearerToken(cookie.SEESAW_ACCESS_TOKEN)).payload.roles
+        return await parseToken(sliceBearerToken(cookie.SEESAW_ACCESS_TOKEN)).payload.roles
     }
     return getUserList
+
+}
+export function getUserRoles(token:string){
+    if (token===undefined){
+        return []
+    }
+    return parseToken(sliceBearerToken(token)).payload.roles
+
 
 }
