@@ -117,6 +117,7 @@ const AdminTableRow = (props:AdminTableRowProps) => {
           .admin-table-row-text1 {
             color: rgb(0, 0, 0);
             height: auto;
+            min-width: 120px;
             flex-grow: 1;
             font-size: 16px;
             align-self: auto;
@@ -217,25 +218,20 @@ const AdminTableRow = (props:AdminTableRowProps) => {
 }
 
 AdminTableRow.defaultProps = {
-  passport_id: 'A12345678',
-  checbox_src: '/assets/admin/checboxi609-qrv-200h.png',
-  email: 'test@gmail.com',
-  name: 'Ronald K. Edwards',
-  create_date: '2022/10/04 23:43:08',
-  checbox_alt: 'checboxI609',
-  item_id: '1',
-  phonenum: '010-1234-4321',
-  alien_regenum: '123432-1234556',
+  passport_id: '입력되지않음',
+  email: '',
+  name: '입력되지않음',
+  item_id: '',
+  phonenum: '입력되지않음',
+  alien_regenum: '입력되지않음',
   onClick: () => {},
 }
 
 AdminTableRow.propTypes = {
   passport_id: PropTypes.string,
-  checbox_src: PropTypes.string,
   email: PropTypes.string,
   name: PropTypes.string,
   create_date: PropTypes.string,
-  checbox_alt: PropTypes.string,
   item_id: PropTypes.string,
   phonenum: PropTypes.string,
   alien_regenum: PropTypes.string,
