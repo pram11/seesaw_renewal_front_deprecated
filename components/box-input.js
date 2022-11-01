@@ -13,7 +13,8 @@ const BoxInput = (props) => {
           <input className="box-input-text1" 
           type={props.inputType?props.inputType:null}
           placeholder={props.placeholder}
-
+          onChange={props.onChange}
+          value = {props.value}
           ></input>
         </div>
       </div>
@@ -123,15 +124,23 @@ const BoxInput = (props) => {
 }
 
 BoxInput.defaultProps = {
+  placeholder: '',
+  value: '',
   rootClassName: '',
   inputTitle: '타이틀',
   inputText: '내용',
+  inputType: 'text',
+  onChange: () => {},
 }
 
 BoxInput.propTypes = {
+  placeholder:PropTypes.string,
+  value:PropTypes.string,
   rootClassName: PropTypes.string,
+  inputType: PropTypes.string,
   inputTitle: PropTypes.string,
   inputText: PropTypes.string,
+  onChange: PropTypes.func,
 }
 
 export default BoxInput

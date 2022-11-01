@@ -1,21 +1,51 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 
 import BackHeader from '../../../components/back-header'
 import BoxInput from '../../../components/box-input'
 import TrueFalseButton from '../../../components/true-false-button'
 import { useRouter } from 'next/router'
+import { useCreateUser } from '../../../services/users'
 const SignUp2 = (props:{
 
 }) => {
-
   const router = useRouter();
+  const [nickname,setNickname] = React.useState<string>(router.query.nickname===undefined?'':router.query.nickname.toString());
+  const [phonenum,setPhonenum] = React.useState<string>(router.query.phonenum===undefined?'':router.query.phonenum.toString());
+  const email = router.query.email?.toString()!;
+  const password = router.query.password?.toString()!;
+  const createUser = useCreateUser({
+    email: email,
+    password: password,
+    name: '',
+    role: [],
+    phonenum: phonenum,
+    nickname: nickname,
+    address: '',
+    address_extra: '',
+    passport_number: '',
+    alien_registration_number: ''
+  },false);
   const onClickNext=()=>{
+    createUser.refetch()
   }
 
   const onClickPrev=()=>{
-    router.back();
+    router.push({pathname:"/signup/1",
+    query:{
+      email:email,
+      password:password,
+      nickname:nickname,
+      phonenum:phonenum
+    }},"/signup/1");
   }
+  useEffect(()=>{
+    if (createUser.status === 'success') {
+      alert("회원가입이 완료되었습니다.");
+      router.push({pathname:"/signin",query:{email:email}},"/signin");
+    }
+  },[createUser.data])
+
   
   return (
     <>
@@ -33,11 +63,19 @@ const SignUp2 = (props:{
           inputText="Please enter your nickname"
           inputTitle="NICKNAME"
           rootClassName="box-input-root-class-name3"
+          value={nickname}
+          onChange={(e)=>{
+            setNickname(e.target.value)
+          }}
         ></BoxInput>
         <BoxInput
           inputText="Enter your phone number"
           inputTitle="Phone Number"
           rootClassName="box-input-root-class-name4"
+          value={phonenum}
+          onChange={(e)=>{
+            setPhonenum(e.target.value)
+          }}
         ></BoxInput>
         <div className="sign-up2-group27">
           <div className="sign-up2-group86">
@@ -71,7 +109,7 @@ const SignUp2 = (props:{
           text="Prev"
           text1="Next"
           rootClassName="true-false-button-root-class-name3"
-          onClickTrue={()=>{}}
+          onClickTrue={onClickNext}
           onClickFalse={onClickPrev}
         ></TrueFalseButton>
       </div>

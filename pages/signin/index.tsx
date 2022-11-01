@@ -14,10 +14,10 @@ import { useUserRoles } from '../../utils/user'
 import AlertModal from '../../components/modal/AlertModal'
 
 const Login = (props:any) => {
+  const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_TOKEN']);
-  const [seesawToken,setSeesawTokenState]= useRecoilState(seesawTokenState);
   const [modalState,setModalState] = useState(false);
-  const [email,setEmail] = React.useState("");
+  const [email,setEmail] = React.useState(router.query.email===undefined?'':router.query.email.toString());
   const [password,setPassword] = React.useState("");
   const {refetch:signIn} = useSignIn(email,password);
   const getUserRoles = useUserRoles();
@@ -37,7 +37,10 @@ const Login = (props:any) => {
       setModalState(true);
     }
   }
-  const router = useRouter();
+  const onSubmit = (e:any) => {
+    e.preventDefault();
+    onClickSignIn();
+  }
   return (
     <>
       <div className="login-container">
@@ -53,18 +56,21 @@ const Login = (props:any) => {
               className="login-i-m-a-g-e03a1"
             />
           </div>
+          <form onSubmit={onSubmit}>
           <div className="login-container2">
-            <DefaultInput text="EMAIL" onChange={val=>setEmail(val)} type="email"></DefaultInput>
-            <DefaultInput text="PASSWORD" onChange={val=>setPassword(val)} type="password" placeholder = ""></DefaultInput>
+
+            <DefaultInput text="EMAIL" onChange={val=>setEmail(val)} type="email" placeholder={"abc@theseesaw.kr"} value={email}></DefaultInput>
+            <DefaultInput text="PASSWORD" onChange={val=>setPassword(val)} type="password" placeholder = "" value={password}></DefaultInput>
             <span className="login-text">
               <span>forgot your password?</span>
             </span>
           </div>
           <SocialButtons></SocialButtons>
           <div className="login-container3">
-            <ButtonLg text="SIGN IN" onClick={()=>{onClickSignIn()}}></ButtonLg>
+            <ButtonLg text="SIGN IN" onClick={onSubmit} buttonType="submit"></ButtonLg>
             <ButtonLg text="SIGN UP" onClick={()=>{router.push("/signup")}}></ButtonLg>
           </div>
+          </form>
         </div>
       </div>
       {

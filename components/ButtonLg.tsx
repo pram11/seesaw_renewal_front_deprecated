@@ -6,7 +6,7 @@ const Buttonlg = (props) => {
   return (
     <>
       <div className={`buttonlg-container ${props.rootClassName} `}>
-        <button className="buttonlg-buttonlg" onClick={props.onClick}>
+        <button className="buttonlg-buttonlg" type={props.buttonType} onClick={props.onClick}>
           <span className="buttonlg-text">{props.text}</span>
         </button>
       </div>
@@ -79,12 +79,14 @@ const Buttonlg = (props) => {
 Buttonlg.defaultProps = {
   text: 'buttontext',
   rootClassName: '',
+  buttonType: 'button',
 }
 
 Buttonlg.propTypes = {
   text: PropTypes.string,
   rootClassName: PropTypes.string,
   onClick: PropTypes.func,
+  buttonType: PropTypes.oneOf(['button', 'submit', 'reset']),
 }
 
 export default Buttonlg

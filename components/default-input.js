@@ -12,6 +12,7 @@ const DefaultInput = (props) => {
           placeholder={props.placeholder}
           className="default-input-textinput input"
           onChange={(evt) => props.onChange(evt.target.value)}
+          value = {props.value}
         />
       </div>
       <style jsx>
@@ -73,6 +74,7 @@ DefaultInput.defaultProps = {
   text: 'Text',
   placeholder: 'placeholder',
   type: 'text',
+  onChange: () => {},
 }
 
 DefaultInput.propTypes = {
@@ -80,6 +82,7 @@ DefaultInput.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.string,
+  value: PropTypes.string,
 }
 
 export default DefaultInput

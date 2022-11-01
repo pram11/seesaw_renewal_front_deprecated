@@ -139,6 +139,8 @@ TrueFalseButton.propTypes = {
   rootClassName: PropTypes.string,
   text1: PropTypes.string,
   text: PropTypes.string,
+  onClickTrue: PropTypes.func.isRequired,
+  onClickFalse: PropTypes.func.isRequired,
 }
 
 export default TrueFalseButton
