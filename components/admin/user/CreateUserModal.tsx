@@ -144,9 +144,10 @@ const UpdateUserModal = (props) => {
     //render
     return (
         <DisplayModal
-            headerText="사용자 정보 조회 / 수정"
+            headerText="사용자 정보 등록"
             bodyComponent={
-                <CreateUserForm 
+                <CreateUserForm
+                    title="Create User"
                     formItems={userFormItems}
                     onChange={onChangeInputValue}
                     onSubmit={initUserFormContent.onSubmit}
