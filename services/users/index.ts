@@ -116,6 +116,27 @@ const useCreateUser=(userData:{
     },{retry:0});
 }
 
+const useUser=(userId:string)=>{
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
+    console.log("useUser Requested",userId);
+    return useQuery(["getUser",userId],async ()=>{
+        const response = await fetch(`${apiAddr}/user/${userId}`,{
+            method:"GET",
+            mode:"cors",
+            credentials:"same-origin",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":cookies.SEESAW_ACCESS_TOKEN
+            },
+        })
+        if (!response.ok){
+            console.warn("Network response Not Succeed")
+            throw new Error("Network response not succeed");
+        }
+        return await response.json()
+    },{retry:3,enabled:true})
+}
+
 
 
 
