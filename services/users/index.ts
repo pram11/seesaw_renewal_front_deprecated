@@ -140,4 +140,4 @@ const useUser=(userId:string)=>{
 
 
 
-export {useSignIn,useUserList,useCreateUser}
+export {useSignIn,useUserList,useCreateUser,useUser}
