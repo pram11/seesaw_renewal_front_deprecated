@@ -125,21 +125,24 @@ const UpdateUserForm = ({title,description,onSubmit,onChange,formItems,buttonTex
         const regExp = /^\d{3}-\d{3,4}-\d{4}$/;
         return regExp.test(value);
     }
+    useEffect(() => {   
+        console.log("UpdateUserForm useEffect,",formItems)
+    })
+    console.log("formItems:",formItems)
+
     
-    console.log("UpdateUserForm props:",formItems)
     return (
         <div>
             <h1 className='form-title'>{title}</h1>
             {description && <p className='form-discription'>{description}</p>}
             <form onSubmit={(event)=>onSubmit(event)}>
                 {formItems.map((item)=>{
-
+                    console.log("item:",item)
                     return (
                         <div>
                             <h2 className='form-item-title'>{item.title}</h2>
                             {item.description && <p className='form-item-description'>{item.description}</p>}
                             {item.items.map((inputitem)=>{
-                                
                                 
                                 return inputitem.type==="password"?
                                 <PasswordUpdateInput 

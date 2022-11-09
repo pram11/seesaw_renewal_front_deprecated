@@ -165,7 +165,7 @@ const AdminUserList = (props) => {
       {updateUserModal?
           <UpdateUserModal 
           onClose={()=>{setUpdateUserModal(false)}} 
-          userId={userToUpdate}/>
+          userID={userToUpdate}/>
         :null}
       {createUserModal?
           <CreateUserModal
