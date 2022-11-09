@@ -28,11 +28,12 @@ export function useUserRoles(){
         if (await cookie.SEESAW_ACCESS_TOKEN===undefined){
             return []
         }
-        return await parseToken(sliceBearerToken(cookie.SEESAW_ACCESS_TOKEN)).payload.roles
+        return parseToken(sliceBearerToken(cookie.SEESAW_ACCESS_TOKEN)).payload.roles
     }
     return getUserList
 
 }
+
 export function getUserRoles(token:string){
     if (token===undefined){
         return []

@@ -21,12 +21,12 @@ const Login = (props:any) => {
   const [password,setPassword] = React.useState("");
   const signIn = useSignIn(email,password);
   const onClickSignIn = async () => {
-    const response = await signIn.refetch();
-    console.log(response);
-    if (response.status==="success"){
-      setCookie("SEESAW_ACCESS_TOKEN", response.data.accessToken, { path: "/" });
-      setCookie("SEESAW_REFRESH_TOKEN",response.data.refreshToken,{path:"/"});
-      const roles = getUserRoles(response.data.accessToken!);
+    signIn.mutate();
+    console.log(signIn);
+    if (signIn.isSuccess){
+      setCookie("SEESAW_ACCESS_TOKEN", signIn.data.accessToken, { path: "/" });
+      setCookie("SEESAW_REFRESH_TOKEN",signIn.data.refreshToken,{path:"/"});
+      const roles = getUserRoles(signIn.data.accessToken!);
 
       if (roles.includes("ADMIN")){
         console.log("admin")

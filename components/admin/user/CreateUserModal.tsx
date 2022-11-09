@@ -1,14 +1,46 @@
 import React from "react";
-import { propTypes } from "react-bootstrap/esm/Image";
-import { useQuery } from "react-query";
+import { useCreateUser } from "../../../services/users";
 import DisplayModal from "../modal/DisplayModal";
 import CreateUserForm,{formProps,formItem,inputItem} from "./CreateUserForm";
 
 
+type userForm={
+    email: string;
+    password: string;
+    name: string;
+    phonenum: string;
+    nickname: string;
+    address: string;
+    address_extra: string;
+    passport_number: string;
+    alien_registration_number: string;
+}
+const CreateUserModal = (props) => {
+    const [inputValues, setInputValues] = React.useState<userForm>({
+        email: "",
+        password: "",
+        name: "",
+        phonenum: "",
+        nickname: "",
+        address: "",
+        address_extra: "",
+        passport_number: "",
+        alien_registration_number: ""        
 
-const UpdateUserModal = (props) => {
-    const [inputValues, setInputValues] = React.useState([]);
+    });
     // 사용자 data load
+    const createUser = useCreateUser({
+        email: inputValues.email,
+        password: inputValues.password,
+        name: inputValues.name,
+        phonenum: inputValues.phonenum,
+        nickname: inputValues.nickname,
+        address: inputValues.address,
+        address_extra: inputValues.address_extra,
+        passport_number: inputValues.passport_number,
+        alien_registration_number: inputValues.alien_registration_number,
+    },true);
+    
     const initUserFormContent:formProps = {
         title:"사용자 추가",
         description:"사용자를 추가합니다.",
@@ -16,6 +48,7 @@ const UpdateUserModal = (props) => {
             event.preventDefault();
             console.log("submit",event) 
             //데이터 발송
+            onClickSubmit();
             
         },
         onChange: (id:string,value:string) => {
@@ -122,22 +155,25 @@ const UpdateUserModal = (props) => {
         }],
         buttonText:"사용자 추가"
     }
-    const [userFormItems,setUserFormItems] = React.useState<null|formItems>(initUserFormContent.formItems);
 
     const onChangeInputValue = (id:string,value:string) => {
         console.log("onChangeInputValue id:",id,"value:",value)
-        if (inputValues.find((item)=>item.id===id)) {
-            const newInputValues = inputValues.map((item)=>{
-                if (item.id===id) {
-                    item.value = value;
-                }
-                return item;
-            })
+        if (inputValues.hasOwnProperty(id)) {
+            let newInputValues = inputValues;
+            newInputValues[id] = value;
             setInputValues(newInputValues);
         } else {
-            setInputValues([...inputValues,{id:id,value:value}]);
+            
+            setInputValues(Object.assign(inputValues,{[id]:value}));
         }
         console.log("inputValues:",inputValues)
+
+    }
+    const onClickSubmit = async () => {
+        console.log("onClickSubmit",inputValues)
+        //데이터 발송
+        const result = await createUser.mutate(inputValues);
+        console.log("result:",result)
 
     }
 
@@ -148,7 +184,7 @@ const UpdateUserModal = (props) => {
             bodyComponent={
                 <CreateUserForm
                     title="Create User"
-                    formItems={userFormItems}
+                    formItems={initUserFormContent.formItems}
                     onChange={onChangeInputValue}
                     onSubmit={initUserFormContent.onSubmit}
 
@@ -156,7 +192,7 @@ const UpdateUserModal = (props) => {
             }
             footerComponent={
                 <>
-                    <button onClick={()=>{console.log(inputValues)}} className="alert-modal-footer-button">{initUserFormContent.buttonText}</button>
+                    <button onClick={()=>{onClickSubmit()}} className="alert-modal-footer-button">{initUserFormContent.buttonText}</button>
                     <style jsx>{`
                     .alert-modal-footer-button{
                         width:100%;
@@ -172,11 +208,22 @@ const UpdateUserModal = (props) => {
             }
 
             onClose={() => {
-                setInputValues([]);
+                setInputValues({
+                    email: "",
+                    password: "",
+                    name: "",
+                    phonenum: "",
+                    nickname: "",
+                    address: "",
+                    address_extra: "",
+                    passport_number: "",
+                    alien_registration_number: ""        
+            
+                });
                 props.onClose();
             }}
         />
     );
 }
 
-export default UpdateUserModal;
+export default CreateUserModal;

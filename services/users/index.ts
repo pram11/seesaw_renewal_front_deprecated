@@ -1,13 +1,13 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import {getAPIServerAddress} from "../../utils/config";
-import { useUserRoles } from "../../utils/user";
+import { getUserRoles, useUserRoles } from "../../utils/user";
 const apiAddr = getAPIServerAddress();
 
 const useSignIn=(email:string,password:string)=>{
     const [tokenCookies, setTokenCookie, removeTokenCookie] = useCookies(['SEESAW_ACCESS_TOKEN','SEESAW_REFRESH_TOKEN']);
-    return useQuery(["signIn"],async ()=>{
+    return useMutation(["signIn"],async ()=>{
         const signInForm = {email:email,password:password}
         const response = await fetch(`${apiAddr}/user/login`,{
             method:"POST",
@@ -25,7 +25,7 @@ const useSignIn=(email:string,password:string)=>{
         }
         console.log(response.headers.get("Authorization"))
         return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.text()}
-    },{enabled:false,retry:false})
+    },{retry:0})
 }
 
 
@@ -62,7 +62,6 @@ const useCreateUser=(userData:{
     email:string,
     password:string,
     name:string,
-    role:Array<string>,
     phonenum:string,
     nickname:string,
     address:string,
@@ -71,12 +70,17 @@ const useCreateUser=(userData:{
     alien_registration_number:string
 },isCreatedByAdmin:Boolean=false) =>{
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
+    console.log("useCreateUser Requested",userData);
     if (isCreatedByAdmin){
-        const userRoles = useUserRoles();
-        if(!userRoles().includes("admin")){
+        const userRoles = getUserRoles(cookies.SEESAW_ACCESS_TOKEN);
+        console.log("userRoles:",userRoles)
+        if(!userRoles.includes("ADMIN")){
+            console.log("User is not admin")
             return {data:undefined,isSuccess:false,isError:true,isLoading:false,error:Error("Permission Denied"),refetch:()=>{}}
         }
-        return useQuery(["createUser"],async ()=>{
+        console.log(`Admin Created User, ${cookies.SEESAW_ACCESS_TOKEN}`)
+    
+        return useMutation(["createUser"],async ()=>{
             const response = await fetch(`${apiAddr}/user`,{
                 method:"POST",
                 mode:"cors",
@@ -92,9 +96,9 @@ const useCreateUser=(userData:{
                 throw new Error("Network response not succeed");
             }
             return await response.text()
-        },{retry:0,enabled:false})
+        },{retry:0})
     }
-    return useQuery(["createUser"],async ()=>{
+    return useMutation(["createUser"],async ()=>{
         const response = await fetch(`${apiAddr}/user`,{
             method:"POST",
             mode:"cors",
@@ -109,7 +113,7 @@ const useCreateUser=(userData:{
             throw new Error("Network response not succeed");
         }
         return await response.text()
-    },{retry:0,enabled:false});
+    },{retry:0});
 }
 
 
