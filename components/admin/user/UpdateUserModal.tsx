@@ -9,6 +9,7 @@ import UpdateUserForm,{formProps,formItems,inputItems} from "./UpdateUserForm";
 
 const UpdateUserModal = (props) => {
     const [inputValues, setInputValues] = React.useState({
+        id:props.userID,
         email: null,
         password: null,
         name: null,
@@ -20,7 +21,6 @@ const UpdateUserModal = (props) => {
         alien_registration_number: null
         
     });
-    const [name,setName]  = React.useState("");
     const [isDataLoaded,setDataLoaded] = React.useState(false);
     // 사용자 data load
     const userData = useUser(props.userID)
@@ -72,7 +72,7 @@ const UpdateUserModal = (props) => {
                     id:"name",
                     label: "이름",
                     type: "text",
-                    value: name,
+                    value: "",
                     placeholder: "이름을 입력하세요",
                     options: [{}],
                     required: true,
@@ -203,6 +203,11 @@ const UpdateUserModal = (props) => {
         }
     }
 
+    const onSubmit = () => {
+        console.log("onSubmit")
+        console.log("inputValues:",inputValues)
+        const data = inputValues;
+    }
 
     //render
     return (
@@ -219,7 +224,7 @@ const UpdateUserModal = (props) => {
             }
             footerComponent={
                 <>
-                    <button onClick={()=>{console.log(inputValues)}} className="alert-modal-footer-button">{initUserFormContent.buttonText}</button>
+                    <button onClick={()=>{onSubmit()}} className="alert-modal-footer-button">{initUserFormContent.buttonText}</button>
                     <style jsx>{`
                     .alert-modal-footer-button{
                         width:100%;
@@ -235,7 +240,7 @@ const UpdateUserModal = (props) => {
             }
 
             onClose={() => {
-                setInputValues([]);
+                setInputValues({});
                 props.onClose();
             }}
         />
