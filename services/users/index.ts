@@ -138,6 +138,36 @@ const useUser=(userId:string)=>{
 }
 
 
-
+const useUpdateUser=(userId:string,userData:{
+    email:string,
+    password:string,
+    name:string,
+    phonenum:string,
+    nickname:string,
+    address:string,
+    address_extra:string,
+    passport_number:string,
+    alien_registration_number:string
+})=>{
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
+    console.log("useUpdateUser Requested",userId,userData);
+    return useMutation(["updateUser",userId],async ()=>{
+        const response = await fetch(`${apiAddr}/user/${userId}`,{
+            method:"PUT",
+            mode:"cors",
+            credentials:"same-origin",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":cookies.SEESAW_ACCESS_TOKEN
+            },
+            body:JSON.stringify(userData)
+        })
+        if (!response.ok){
+            console.warn("Network response Not Succeed")
+            throw new Error("Network response not succeed");
+        }
+        return await response.text()
+    },{retry:0})
+}
 
 export {useSignIn,useUserList,useCreateUser,useUser}
