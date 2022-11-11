@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCreateUser } from "../../../services/users";
 import DisplayModal from "../modal/DisplayModal";
 import CreateUserForm,{formProps,formItem,inputItem} from "./CreateUserForm";
@@ -172,13 +172,35 @@ const CreateUserModal = (props) => {
     const onClickSubmit = async () => {
         console.log("onClickSubmit",inputValues)
         //데이터 발송
-        const result = await createUser.mutate(inputValues);
+        const result = await createUser.mutateAsync(inputValues);
         console.log("result:",result)
+        if (result==="success") {
+            //성공
+            setSuccessModalShown(true);
 
+        }
+        if (result?.isError){
+            //실패
+            setErrorModalShown(true);
+        }
+
+    }
+    const [isSuccessModalShown,setSuccessModalShown] = useState(false);
+    const [isErrorModalShown, setErrorModalShown] = useState(false);
+    const onCloseSuccessModal = () => {
+        setSuccessModalShown(false);
+        props.refetchData();
+        props.onClose();
+    }
+    const onCloseErrorModal = () => {
+        setErrorModalShown(false);
+        props.refetchData();
+        props.onClose();
     }
 
     //render
     return (
+        <>
         <DisplayModal
             headerText="사용자 정보 등록"
             bodyComponent={
@@ -223,6 +245,35 @@ const CreateUserModal = (props) => {
                 props.onClose();
             }}
         />
+        {isSuccessModalShown && <DisplayModal
+            headerText="사용자 정보 등록 성공"
+            bodyComponent={
+                <div>
+                    <p>사용자 정보 등록에 성공하였습니다.</p>
+                </div>
+            }
+            footerComponent={
+                <>
+                    <button onClick={onCloseSuccessModal} className="alert-modal-footer-button">확인</button>
+                    </>
+            }
+            onClose={onCloseSuccessModal}
+        />}
+        {isErrorModalShown && <DisplayModal
+            headerText="사용자 정보 등록 실패"
+            bodyComponent={
+                <div>
+                    <p>사용자 정보 등록에 실패하였습니다.</p>
+                </div>
+            }
+            footerComponent={
+                <>
+                    <button onClick={onCloseErrorModal} className="alert-modal-footer-button">확인</button>
+                </>
+            }
+            onClose={onCloseErrorModal}
+        />}
+        </>
     );
 }
 
