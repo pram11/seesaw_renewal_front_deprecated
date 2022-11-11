@@ -4,35 +4,34 @@ const AdminTableHeader = (props) => {
   return (
     <>
       <tr className="admin-table-header-table-row">
-        <th className="admin-table-header-text">
+        <th className="admin-table-header-select">
           <span>선택</span>
         </th>
-        <th className="admin-table-header-text02">
+        <th className="admin-table-header-id">
           <span>번호</span>
         </th>
-        <th className="admin-table-header-text04">
+        <th className="admin-table-header-name">
           <span>이름</span>
         </th>
-        <th className="admin-table-header-text06">
+        <th className="admin-table-header-passport-num">
           <span>여권번호</span>
         </th>
-        <th className="admin-table-header-text08">
+        <th className="admin-table-header-alien-regenum">
           <span>외국인등록번호</span>
         </th>
-        <th className="admin-table-header-text10">
+        <th className="admin-table-header-phonenum">
           <span>전화번호</span>
         </th>
-        <th className="admin-table-header-text12">
+        <th className="admin-table-header-email">
           <span>이메일</span>
         </th>
-        <th className="admin-table-header-text14">
+        <th className="admin-table-header-create-date">
           <span>가입일시</span>
         </th>
       </tr>
       <style jsx>
         {`
           .admin-table-header-table-row {
-            display: flex;
             padding: 9px 16px;
             position: relative;
             align-self: stretch;
@@ -45,134 +44,18 @@ const AdminTableHeader = (props) => {
             margin-bottom: 10px;
             background-color: rgba(244, 244, 244, 1);
           }
-          .admin-table-header-text {
-            color: rgba(0, 0, 0, 1);
-            width: 40px;
-            height: auto;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
+          .admin-table-header-select {
+            width:36px;
+            padding:auto;
+            align-items:center;
           }
-          .admin-table-header-text02 {
-            color: rgba(0, 0, 0, 1);
-            width: 40px;
-            height: auto;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
+          .admin-table-header-id{
+            width:36px;
+            padding:auto;
           }
-          .admin-table-header-text04 {
-            color: rgba(0, 0, 0, 1);
-            height: auto;
-            flex-grow: 1;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
-          }
-          .admin-table-header-text06 {
-            color: rgba(0, 0, 0, 1);
-            width: 180px;
-            height: auto;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
-          }
-          .admin-table-header-text08 {
-            color: rgba(0, 0, 0, 1);
-            height: auto;
-            flex-grow: 1;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
-          }
-          .admin-table-header-text10 {
-            color: rgba(0, 0, 0, 1);
-            height: auto;
-            flex-grow: 1;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
-          }
-          .admin-table-header-text12 {
-            color: rgba(0, 0, 0, 1);
-            height: auto;
-            flex-grow: 1;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 8px;
-            margin-bottom: 0;
-            text-decoration: none;
-          }
-          .admin-table-header-text14 {
-            color: rgba(0, 0, 0, 1);
-            height: auto;
-            flex-grow: 1;
-            font-size: 16px;
-            align-self: auto;
-            font-style: Bold;
-            text-align: center;
-            font-family: Roboto;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            margin-right: 0;
-            margin-bottom: 0;
-            text-decoration: none;
-          }
+          .admin-table-header-create-date{
+            width:120px;
+          }  
         `}
       </style>
     </>

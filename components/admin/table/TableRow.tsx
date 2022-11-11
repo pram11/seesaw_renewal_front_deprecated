@@ -45,7 +45,7 @@ const AdminTableRow = (props:AdminTableRowProps) => {
         {`
           .admin-table-row-group2 {
             display: flex;
-            padding: 9px 16px;
+            padding: 8px 16px;
             position: relative;
             align-self: stretch;
             box-sizing: border-box;

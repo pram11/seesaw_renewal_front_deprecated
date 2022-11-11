@@ -39,24 +39,19 @@ const AdminUserTable = (props:UserTableProps) => {
       <style jsx>
         {`
           .admin-user-table-table {
-            flex: 1;
-            left: 0px;
             width: 100%;
-            display: flex;
+
             padding: 8px 0 0 0;
             position: relative;
             box-sizing: border-box;
-            align-items: flex-start;
-            flex-shrink: 0;
+
             border-color: transparent;
             border-radius: 0px 0px 0px 0px;
-            flex-direction: column;
+            table-layout:fixed;
+            border-spacing:1px;
           }
           .admin-user-table-table-contents {
-            width: 100%;
-            display: flex;
-            align-items: flex-start;
-            flex-direction: column;
+
           }
         `}
       </style>

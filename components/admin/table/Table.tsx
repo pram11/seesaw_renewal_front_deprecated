@@ -78,10 +78,10 @@ const AdminTable = (props:UserTableProps) => {
             border-color: transparent;
             border-radius: 0px 0px 0px 0px;
             flex-direction: column;
+            table-layout: auto;
           }
           .admin-user-table-table-contents {
             width: 100%;
-            display: flex;
             align-items: flex-start;
             flex-direction: column;
           }
