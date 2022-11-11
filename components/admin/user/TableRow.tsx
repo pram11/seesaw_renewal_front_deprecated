@@ -51,18 +51,24 @@ const AdminTableRow = (props:AdminTableRowProps) => {
           .admin-table-row-group2:hover {
             background-color: rgba(230, 230, 230, 1);
             cursor:pointer;
+            padding: 8px 0;
+
           }
 
           .admin-table-row-select{
             width:36px;
             padding:7px;
             align-items:center;
+            padding: 8px 0;
+
           }
           
           .admin-table-row-id {
             width:36px;
             padding:auto;
             text-align:center;
+            padding: 8px 0;
+
           }
           
           .admin-table-row-name {
@@ -70,30 +76,42 @@ const AdminTableRow = (props:AdminTableRowProps) => {
             text-align:center;
             text-overflow: ellipsis;
             white-space: nowrap; 
+            padding: 8px 0;
+
           }
           .admin-table-row-passport-id{
             text-align:center;
             text-overflow: ellipsis;
             white-space: nowrap; 
+            padding: 8px 0;
+
           }
           .admin-table-row-alien-regenum{
             text-align:center;
             text-overflow: ellipsis;
             white-space: nowrap; 
+            padding: 8px 0;
+
           }
           .admin-table-row-phonenum{
             text-align:center;
             text-overflow: ellipsis;
             white-space: nowrap; 
+            padding: 8px 0;
+
           }
           .admin-table-row-email{
             text-align:center;
             text-overflow: ellipsis;
             white-space: nowrap; 
+            padding: 8px 0;
+
           }
           .admin-table-row-create-date{
             width:120px;
             text-align:center;
+            padding: 8px 0;
+
           }
         `}
       </style>
