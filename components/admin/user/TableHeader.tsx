@@ -42,15 +42,16 @@ const AdminTableHeader = (props) => {
             margin-right: 0;
             border-radius: 0px 0px 0px 0px;
             margin-bottom: 10px;
-            background-color: rgba(244, 244, 244, 1);
+            background-color: rgba(230, 230, 230, 1);
           }
           .admin-table-header-select {
+            padding: 8px 0;
             width:36px;
             padding:auto;
             align-items:center;
           }
           .admin-table-header-id{
-            width:36px;
+            width:60px;
             padding:auto;
           }
           .admin-table-header-create-date{

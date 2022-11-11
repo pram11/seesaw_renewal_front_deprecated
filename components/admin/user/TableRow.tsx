@@ -46,10 +46,16 @@ const AdminTableRow = (props:AdminTableRowProps) => {
             border-radius: 0px 0px 0px 0px;
             margin-bottom: 10px;
             background-color: rgba(244, 244, 244, 1);
+
           }
+          .admin-table-row-group2:hover {
+            background-color: rgba(230, 230, 230, 1);
+            cursor:pointer;
+          }
+
           .admin-table-row-select{
             width:36px;
-            padding:auto;
+            padding:7px;
             align-items:center;
           }
           
