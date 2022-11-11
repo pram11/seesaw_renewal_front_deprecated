@@ -13,6 +13,7 @@ import AlertModal from '../../../components/modal/AlertModal'
 import UpdateUserModal from "../../../components/admin/user/UpdateUserModal";
 import CreateUserModal from '../../../components/admin/user/CreateUserModal'
 import { useCommonCodeChildList } from '../../../services/codes'
+import Pagination from '../../../components/admin/pagination/Pagination'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
@@ -133,6 +134,22 @@ const AdminUserList = (props) => {
                   setUpdateUserModal(true);
                 }
               }></AdminUserTable>
+              <div className='adminuser-pagination-container'>
+                <Pagination 
+                  currentPage={1}
+                  size={10}
+                  startFrom={1}
+                  maxPage={10}
+                  onClick={(page:number)=>{
+                    console.log("page:",page)
+                  }}
+                  enableFirst={true}
+                  enableLast={true}
+                />
+              </div>
+              
+              
+              
             <div className="adminuser-list-button-group">
               <AdminButton
                 text="사용자 추가"
@@ -180,6 +197,12 @@ const AdminUserList = (props) => {
             min-height: 100vh;
             flex-direction: column;
           }
+          .adminuser-pagination-container{
+            display:flex;
+            justify-content:center;
+            margin-top:20px;
+          }
+
           .adminuser-list-adminusermanagedesktop {
             width: 100%;
             height: 1024px;
@@ -205,7 +228,7 @@ const AdminUserList = (props) => {
             padding-right: var(--dl-space-space-unit);
           }
           .adminuser-list-group113 {
-            flex: 4;
+            flex: 6;
             display: block;
             padding: 0;
             position: relative;
