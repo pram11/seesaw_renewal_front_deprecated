@@ -164,7 +164,7 @@ const CreateUserModal = (props) => {
             setInputValues(newInputValues);
         } else {
             
-            setInputValues(Object.assign(inputValues,{[id]:value}));
+            setInputValues(Object.assign({},inputValues,{[id]:value}));
         }
         console.log("inputValues:",inputValues)
 
@@ -174,12 +174,12 @@ const CreateUserModal = (props) => {
         //데이터 발송
         const result = await createUser.mutateAsync(inputValues);
         console.log("result:",result)
-        if (result==="success") {
+        if (result.status===200) {
             //성공
             setSuccessModalShown(true);
 
         }
-        if (result?.isError){
+        if (result.status===500){
             //실패
             setErrorModalShown(true);
         }
@@ -194,8 +194,7 @@ const CreateUserModal = (props) => {
     }
     const onCloseErrorModal = () => {
         setErrorModalShown(false);
-        props.refetchData();
-        props.onClose();
+
     }
 
     //render

@@ -91,11 +91,7 @@ const useCreateUser=(userData:{
                 },
                 body:JSON.stringify(userData)
             })
-            if (!response.ok){
-                console.warn("Network response Not Succeed")
-                throw new Error("Network response not succeed");
-            }
-            return await response.text()
+            return await response
         },{retry:0})
     }
     return useMutation(["createUser"],async ()=>{
