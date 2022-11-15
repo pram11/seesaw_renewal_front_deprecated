@@ -5,25 +5,24 @@ import {getAPIServerAddress} from "../../utils/config";
 import { getUserRoles, useUserRoles } from "../../utils/user";
 const apiAddr = getAPIServerAddress();
 
-const useSignIn=(email:string,password:string)=>{
-    return useMutation(["signIn"],async ()=>{
-        const signInForm = {email:email,password:password}
-        const response = await fetch(`${apiAddr}/user/login`,{
-            method:"POST",
-            mode:"cors",
-            credentials:"same-origin",
-            headers:{
-                "Content-Type":"application/json",
-                "Accept":"application/json"
-            },
-            body:JSON.stringify(signInForm)
-        })
-        if (!response.ok){
-            console.warn("Network response Not Succeed")
-            throw new Error("Network response not succeed");
+const useSignIn=()=>{
+    return useMutation({mutationFn:async requestParam=>{
+        console.log("useSignIn Requested",requestParam);
+            const signInForm = {email:requestParam.email,password:requestParam.password}
+            const response = await fetch(`${apiAddr}/user/login`,{
+                method:"POST",
+                mode:"cors",
+                credentials:"same-origin",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Accept":"application/json"
+                },
+                body:JSON.stringify(signInForm)
+            })
+            console.log("response:",response.text)
+            return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.text(),status:response.status}
         }
-        return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.text()}
-    },{retry:0})
+    })
 }
 
 

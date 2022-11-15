@@ -19,14 +19,14 @@ const Login = (props:any) => {
   const [modalState,setModalState] = useState(false);
   const [email,setEmail] = React.useState(router.query.email===undefined?'':router.query.email.toString());
   const [password,setPassword] = React.useState("");
-  const signIn = useSignIn(email,password);
+  const signIn = useSignIn();
   const onClickSignIn = async () => {
-    signIn.mutate();
-    console.log(signIn);
-    if (signIn.isSuccess){
-      setCookie("SEESAW_ACCESS_TOKEN", signIn.data.accessToken, { path: "/" });
-      setCookie("SEESAW_REFRESH_TOKEN",signIn.data.refreshToken,{path:"/"});
-      const roles = getUserRoles(signIn.data.accessToken!);
+    let res = await signIn.mutateAsync({email:email,password:password});
+    console.log(res)
+    if (res.status===200) {
+      setCookie("SEESAW_ACCESS_TOKEN", res.accessToken, { path: "/" });
+      setCookie("SEESAW_REFRESH_TOKEN",res.refreshToken,{path:"/"});
+      const roles = getUserRoles(res.accessToken!);
 
       if (roles.includes("ADMIN")){
         console.log("admin")
