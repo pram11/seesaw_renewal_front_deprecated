@@ -6,7 +6,6 @@ import { getUserRoles, useUserRoles } from "../../utils/user";
 const apiAddr = getAPIServerAddress();
 
 const useSignIn=(email:string,password:string)=>{
-    const [tokenCookies, setTokenCookie, removeTokenCookie] = useCookies(['SEESAW_ACCESS_TOKEN','SEESAW_REFRESH_TOKEN']);
     return useMutation(["signIn"],async ()=>{
         const signInForm = {email:email,password:password}
         const response = await fetch(`${apiAddr}/user/login`,{
@@ -23,7 +22,6 @@ const useSignIn=(email:string,password:string)=>{
             console.warn("Network response Not Succeed")
             throw new Error("Network response not succeed");
         }
-        console.log(response.headers.get("Authorization"))
         return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.text()}
     },{retry:0})
 }
@@ -31,16 +29,26 @@ const useSignIn=(email:string,password:string)=>{
 
 const useUserList = (Q:{
     queryType:string,
-    queryValue:string
-})=> {
+    queryValue:string,
+    page:number|undefined,
+    size:number|undefined
+},filter)=> {
     console.log("useUserList Requested",Q);
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    return useQuery(["getUserList"],async ()=>{
+    return useQuery(["getUserList",filter],async ()=>{
     if (Q.queryType!==""&&Q.queryValue!=="") {
         var path = `${apiAddr}/user?${Q.queryType}=${Q.queryValue}`;
     } else {
         var path = `${apiAddr}/user`;
+        if (Q.page!==undefined&&Q.size!==undefined) {
+            path = `${path}?page=${Q.page-1}&size=${Q.size}`;
+        }
+        if (Q.page!==undefined&&Q.size===undefined) {
+            path = `${path}?page=${Q.page-1}`;
+        }
     }
+    
+    console.log("path:",path);
     const response = await fetch(path,{
         method:"GET",
         mode:"cors",

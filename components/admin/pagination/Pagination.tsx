@@ -20,7 +20,7 @@ type PaginationProps = {
  */
 const Pagination = ({
     size=10,
-    currentPage=0,
+    currentPage=1,
     startFrom =1,
     maxPage,
     onClick,
@@ -28,13 +28,14 @@ const Pagination = ({
     enableLast=false
 }:PaginationProps)=>{
     
-
+    console.log("current page",currentPage)
     return(
         <div>
             {enableFirst && <button className="pagination-button pagination-button-strongest-color" onClick={()=>onClick(1)}>&laquo;</button>}
             {currentPage>0 && <button  className="pagination-button pagination-button-strong-color" onClick={()=>onClick(currentPage-1)}>prev</button>}
             {Array.from({length:size},(_,i)=>i+startFrom).map((page)=>{
                 if(page>maxPage) return null;
+                if (page===currentPage+1) return <button className="pagination-button pagination-button-strong-color" onClick={()=>onClick(page)}>{page}</button>
                 return <button className="pagination-button pagination-button-normal-color" onClick={()=>onClick(page)}>{page}</button>
             })}
             {currentPage<size-1 && <button className="pagination-button pagination-button-strong-color" onClick={()=>onClick(currentPage+1)}>next</button>}

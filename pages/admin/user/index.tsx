@@ -14,6 +14,7 @@ import UpdateUserModal from "../../../components/admin/user/UpdateUserModal";
 import CreateUserModal from '../../../components/admin/user/CreateUserModal'
 import { useCommonCodeChildList } from '../../../services/codes'
 import Pagination from '../../../components/admin/pagination/Pagination'
+import { useRouter } from 'next/router'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
@@ -26,16 +27,26 @@ const AdminUserList = (props) => {
   const [updateUserModal,setUpdateUserModal] = useState(false);
   const [createUserModal,setCreateUserModal] = useState(false);
   const [userToUpdate,setUserToUpdate] = useState(null);
+  const router = useRouter();
+  const [page,setPage] = useState(1);
+  const [size,setSize] = useState(10);
   const userListRequest = useUserList({
     queryType:queryType,
-    queryValue:queryValue
-  })
+    queryValue:queryValue,
+    page:page,
+    size:size
+  },page)
+  
+ 
   const commonCodechildList = useCommonCodeChildList({
     parentCode:"AU01"
   });
   
+  
   useEffect(()=>{
+
     console.log("userListRequest",userListRequest.status)
+
     if(userListRequest.status==="success"){
       setUserList(userListRequest.data)
 
@@ -88,8 +99,10 @@ const AdminUserList = (props) => {
   const submitSearchForm = (evt)=>{
     evt.preventDefault();
     console.log("submitSearchForm")
+    setPage(1)
     userListRequest.refetch();
   }
+  
   return (
     <>
       <div className="adminuser-list-container">
@@ -136,12 +149,14 @@ const AdminUserList = (props) => {
               }></AdminUserTable>
               <div className='adminuser-pagination-container'>
                 <Pagination 
-                  currentPage={1}
-                  size={10}
+                  currentPage={page-1}
+                  size={size}
                   startFrom={1}
                   maxPage={10}
-                  onClick={(page:number)=>{
+                  onClick={async (page:number)=>{
                     console.log("page:",page)
+                    setPage(page);
+                    userListRequest.refetch();
                   }}
                   enableFirst={true}
                   enableLast={true}
