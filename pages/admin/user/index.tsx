@@ -18,7 +18,7 @@ import { useRouter } from 'next/router'
 const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM']);
+  const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM','SEESAW_ACCESS_TOKEN']);
   const [desktopOnlyAlert,setDesktopOnlyAlert] = useState(false);
   const [userList, setUserList] = useState([]);
   const [queryTypeList, setQueryTypeList] = useState([]);
@@ -26,6 +26,7 @@ const AdminUserList = (props) => {
   const [queryValue, setQueryValue] = useState("");
   const [updateUserModal,setUpdateUserModal] = useState(false);
   const [createUserModal,setCreateUserModal] = useState(false);
+  const [showSigninModal,setShowSigninModal] = useState(false);
   const [userToUpdate,setUserToUpdate] = useState(null);
   const router = useRouter();
   const [page,setPage] = useState(1);
@@ -70,6 +71,11 @@ const AdminUserList = (props) => {
       console.error("error:",commonCodechildList.error)
     }
   },[commonCodechildList.data])
+  useEffect(()=>{
+    if(cookies.SEESAW_ACCESS_TOKEN===undefined){
+      setShowSigninModal(true)
+    }
+  },[])
 
    
   useEffect(()=>{
@@ -187,6 +193,14 @@ const AdminUserList = (props) => {
           </div>
         </div>
       </div>
+      {showSigninModal?
+        <AlertModal
+          headerText="로그인이 필요합니다."
+          bodyText="관리자 페이지에 접근하려면 로그인이 필요합니다."
+          onClose={()=>{setShowSigninModal(false)}}
+          />
+        :null
+      }
       {
       desktopOnlyAlert?
         <AlertModal 
