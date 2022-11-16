@@ -28,7 +28,7 @@ const Pagination = ({
     enableLast=false
 }:PaginationProps)=>{
     
-    console.log("current page",currentPage)
+    console.log("current page",currentPage,"max page",maxPage)
     return(
         <div>
             {enableFirst && <button className="pagination-button pagination-button-strongest-color" onClick={()=>onClick(1)}>&laquo;</button>}
@@ -38,7 +38,7 @@ const Pagination = ({
                 if (page===currentPage+1) return <button className="pagination-button pagination-button-strong-color" onClick={()=>onClick(page)}>{page}</button>
                 return <button className="pagination-button pagination-button-normal-color" onClick={()=>onClick(page)}>{page}</button>
             })}
-            {currentPage<size-1 && <button className="pagination-button pagination-button-strong-color" onClick={()=>onClick(currentPage+2)}>next</button>}
+            {currentPage<maxPage-1 && <button className="pagination-button pagination-button-strong-color" onClick={()=>onClick(currentPage+2)}>next</button>}
             {enableLast && <button className="pagination-button pagination-button-strongest-color" onClick={()=>onClick(maxPage)}>&raquo;</button>}
             <style jsx>
                 {`

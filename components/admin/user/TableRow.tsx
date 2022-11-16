@@ -13,7 +13,6 @@ type AdminTableRowProps = {
   onClick:React.MouseEventHandler;
 }
 const AdminTableRow = (props:AdminTableRowProps) => {
-  console.log("item loaded:",props)
   return (
     <>
       <tr className="admin-table-row-group2" >

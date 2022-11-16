@@ -61,8 +61,9 @@ const useUserList = (Q:{
         console.warn("Network response Not Succeed")
         throw new Error("Network response not succeed");
     }
-
-    return await response.json()
+    let count = 0;
+    
+    return {"count":parseInt(response.headers.get("X-Total-Count")??"0"),"result":await response.json()}
 },{retry:3,enabled:true})}
 
 const useCreateUser=(userData:{

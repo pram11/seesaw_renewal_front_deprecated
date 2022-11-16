@@ -31,6 +31,7 @@ const AdminUserList = (props) => {
   const router = useRouter();
   const [page,setPage] = useState(1);
   const [size,setSize] = useState(10);
+  const [userCount,setUserCount] = useState(0);
   const userListRequest = useUserList({
     queryType:queryType,
     queryValue:queryValue,
@@ -49,7 +50,9 @@ const AdminUserList = (props) => {
     console.log("userListRequest",userListRequest.status)
 
     if(userListRequest.status==="success"){
-      setUserList(userListRequest.data)
+      console.log("header:",userListRequest.data)
+      setUserCount(userListRequest.data.count)
+      setUserList(userListRequest.data.result)
 
     }
   },[userListRequest.data])
@@ -65,6 +68,7 @@ const AdminUserList = (props) => {
         }
       })
       console.log("queryTypeList: ",queryTypeList)
+      
       setQueryTypeList(queryTypeList)
     }
     if (commonCodechildList.status === "error") {
@@ -108,6 +112,10 @@ const AdminUserList = (props) => {
     setPage(1)
     userListRequest.refetch();
   }
+  const calculateMaxPage = ()=>{
+    return Math.ceil(userCount/size);
+  }
+
   
   return (
     <>
@@ -158,7 +166,7 @@ const AdminUserList = (props) => {
                   currentPage={page-1}
                   size={size}
                   startFrom={1}
-                  maxPage={10}
+                  maxPage={calculateMaxPage()}
                   onClick={async (page:number)=>{
                     console.log("page:",page)
                     setPage(page);
