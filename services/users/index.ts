@@ -70,7 +70,7 @@ const useUserList = (Q:{
 },filter)=> {
     console.log("useUserList Requested",Q);
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    return useQuery(["getUserList",filter],async ()=>{getUserList(cookies.SEESAW_ACCESS_TOKEN,Q)},{retry:3,enabled:true})
+    return useQuery(["getUserList",filter],async ()=>getUserList(cookies.SEESAW_ACCESS_TOKEN,Q),{retry:3,enabled:true})
 }
 
 
