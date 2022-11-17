@@ -7,15 +7,29 @@ import AdminUserTable from '../../../components/admin/user/UserTable'
 import AdminButton from '../../../components/admin/Button'
 import { useUserList } from '../../../services/users'
 import { useCookies } from 'react-cookie'
-import { useRecoilValue } from 'recoil'
-import { seesawTokenState } from '../../../states'
+
 import AlertModal from '../../../components/modal/AlertModal'
 import UpdateUserModal from "../../../components/admin/user/UpdateUserModal";
 import CreateUserModal from '../../../components/admin/user/CreateUserModal'
-import { useCommonCodeChildList } from '../../../services/codes'
+import { getCommonCodeChildList } from '../../../services/codes'
 import Pagination from '../../../components/admin/pagination/Pagination'
 import { useRouter } from 'next/router'
-const DropDownSelect = dynamic(()=>import('../../../components/admin/DropDownSelect'),{ssr:false})
+import DropDownSelect from '../../../components/admin/DropDownSelect'
+
+export async function getStaticProps() {
+  const sortOptionItemList = await getCommonCodeChildList({parentCode:"AU02"});
+  console.log(sortOptionItemList);
+  const searchOptionItemList = await getCommonCodeChildList({parentCode:"AU01"});
+  return {
+    props: {
+      searchOptionItemList:searchOptionItemList.map((item:any)=>{return {id:item.id.code,value:item.label}}),
+      sortOptionItemList : sortOptionItemList.map((item:any)=>{return {id:item.id.code,value:item.label}})
+      // props for your component
+    },
+  }
+}
+
+
 const AdminUserList = (props) => {
   const [isSidebarOpen,showSidebar] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['ADMIN_DESKTOPONLY_ALERT_CONFIRM','SEESAW_ACCESS_TOKEN']);
@@ -40,15 +54,17 @@ const AdminUserList = (props) => {
   },page)
   
  
-  const commonCodechildList = useCommonCodeChildList({
-    parentCode:"AU01"
-  });
+  // const searchOptionItemList = useCommonCodeChildList({
+  //   parentCode:"AU01"
+  // });
+
+  // const sortOptionItemList = useCommonCodeChildList({
+  //   parentCode:"AU02"
+  // });
+
   
   
   useEffect(()=>{
-
-    console.log("userListRequest",userListRequest.status)
-
     if(userListRequest.status==="success"){
       console.log("header:",userListRequest.data)
       setUserCount(userListRequest.data.count)
@@ -57,24 +73,25 @@ const AdminUserList = (props) => {
     }
   },[userListRequest.data])
 
-  useEffect(()=>{
-    console.log("commonCodeChildList Status:",commonCodechildList.status)
-    if (commonCodechildList.status === "success") {
-      console.log("queryTypeList: ",commonCodechildList.data)
-      let queryTypeList = commonCodechildList.data.map((item)=>{
-        return {
-          id:item.id.code,
-          value:item.label,
-        }
-      })
-      console.log("queryTypeList: ",queryTypeList)
+  // useEffect(()=>{
+  //   console.log("searchOptionItemList Status:",searchOptionItemList.status)
+  //   if (searchOptionItemList.status === "success") {
+  //     console.log("queryTypeList: ",searchOptionItemList.data)
+  //     let queryTypeList = searchOptionItemList.data.map((item)=>{
+  //       return {
+  //         id:item.id.code,
+  //         value:item.label,
+  //       }
+  //     })
+  //     console.log("queryTypeList: ",queryTypeList)
       
-      setQueryTypeList(queryTypeList)
-    }
-    if (commonCodechildList.status === "error") {
-      console.error("error:",commonCodechildList.error)
-    }
-  },[commonCodechildList.data])
+  //     setQueryTypeList(queryTypeList)
+  //   }
+  //   if (searchOptionItemList.status === "error") {
+  //     console.error("error:",searchOptionItemList.error)
+  //   }
+  // },[searchOptionItemList.data])
+
   useEffect(()=>{
     if(cookies.SEESAW_ACCESS_TOKEN===undefined){
       setShowSigninModal(true)
@@ -106,7 +123,7 @@ const AdminUserList = (props) => {
     setQueryType(evt.target.value);
     // setQueryType(val);
   }
-  const submitSearchForm = (evt)=>{
+  const submitSearchForm = (evt:React.FormEvent)=>{
     evt.preventDefault();
     console.log("submitSearchForm")
     setPage(1)
@@ -115,6 +132,7 @@ const AdminUserList = (props) => {
   const calculateMaxPage = ()=>{
     return Math.ceil(userCount/size);
   }
+  
 
   
   return (
@@ -130,7 +148,6 @@ const AdminUserList = (props) => {
         <div className="adminuser-list-adminusermanagedesktop">
           <Header
             text="사용자 목록"
-            rootClassName="header-root-class-name"
             headerRightText=" "
             onMenuClick={()=>{showSidebar(!isSidebarOpen)}}
           ></Header>
@@ -138,7 +155,7 @@ const AdminUserList = (props) => {
             {isSidebarOpen?<AdminSidebar/>:null}
             <div className="adminuser-list-group113">
               <form className="adminuser-list-form" onSubmit={submitSearchForm}>
-                <DropDownSelect options={queryTypeList}  onSelect={(event)=>{onSelectQueryType(event)}}></DropDownSelect>
+                 <DropDownSelect options={props.searchOptionItemList}  onSelect={(event)=>{onSelectQueryType(event)}}></DropDownSelect>
                 <div className="adminuser-list-group47">
                   <input
                     type="text"
@@ -148,7 +165,12 @@ const AdminUserList = (props) => {
                   />
                 </div>
                 
-                <DropDownSelect options={[{id:"1",value:"정렬기준"}]}></DropDownSelect>
+                 {/* 
+                  sorting 기능 추가시 사용  
+                  <DropDownSelect options={props.sortOptionItemList} onSelect={function (event: React.SyntheticEvent<HTMLSelectElement, Event>): void {
+                  throw new Error('Function not implemented.')
+                  } }></DropDownSelect> 
+                */}
                 <button className="adminuser-list-buttonlg adminuser-list-text">
                     검색
                 </button>

@@ -24,26 +24,29 @@ function useCommonCodeParentList(){
 function useCommonCodeChildList(Q:{parentCode:string}){
     console.log("useCommonCodeChildList Requested",Q);
     // const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    return useQuery(['getCommonCodeChildren'],async ()=>{
-        const response = await fetch(`${apiAddr}/code/${Q.parentCode}/children`,{
-            method:"GET",
-            mode:"cors",
-            headers:{
-                "Content-Type":"application/json",
-                "Accept":"application/json"
-                // "Authorization":cookies.SEESAW_ACCESS_TOKEN,
-            }
-        })
-        if (!response.ok){
-            console.warn("Network response Not Succeed");
-            console.warn(response);
-            throw new Error("Network response not succeed")
+    return useQuery(['getCommonCodeChildren'],()=>getCommonCodeChildList(Q))
 
-        }
-        let result = await response.json();
-        return result;
-    })
 }
 
 
-export {useCommonCodeParentList,useCommonCodeChildList}
+async function getCommonCodeChildList(Q:{parentCode:string}){
+    const response = await fetch(`${apiAddr}/code/${Q.parentCode}/children`,{
+        method:"GET",
+        mode:"cors",
+        headers:{
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+            // "Authorization":cookies.SEESAW_ACCESS_TOKEN,
+        }
+    })
+    if (!response.ok){
+        console.warn("Network response Not Succeed");
+        console.warn(response);
+        throw new Error("Network response not succeed")
+
+    }
+    let result = await response.json();
+    return result;
+}
+
+export {useCommonCodeParentList,useCommonCodeChildList,getCommonCodeChildList}
