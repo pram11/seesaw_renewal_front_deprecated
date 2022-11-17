@@ -227,7 +227,7 @@ const AdminUserList = (props) => {
         <AlertModal
           headerText="로그인이 필요합니다."
           bodyText="관리자 페이지에 접근하려면 로그인이 필요합니다."
-          onClose={()=>{setShowSigninModal(false)}}
+          onClose={()=>{setShowSigninModal(false);router.push("/signin")}}
           />
         :null
       }
