@@ -221,4 +221,4 @@ const useDeleteUser=(userId:string)=>{
 
 }
 
-export {useSignIn,useUserList,useCreateUser,useUser}
+export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser}
