@@ -70,7 +70,7 @@ const useUserList = (Q:{
 },filter)=> {
     console.log("useUserList Requested",Q);
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    return useQuery(["getUserList",filter],async ()=>{getUserList(cookies.SEESAW_ACCESS_TOKEN,Q)},{retry:3,enabled:true})
+    return useQuery(["getUserList",filter],async ()=>getUserList(cookies.SEESAW_ACCESS_TOKEN,Q),{retry:3,enabled:true})
 }
 
 
@@ -214,10 +214,11 @@ const deleteUser = async (accessToken:string,userId:string)=>{
 }
 
 
-const useDeleteUser=(userId:string)=>{
+const useDeleteUser=()=>{
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    console.log("useDeleteUser Requested",userId);
-    return useMutation(["deleteUser",userId],()=>deleteUser(cookies.SEESAW_ACCESS_TOKEN,userId),{retry:0})
+    return useMutation({mutationFn:async (userId:string)=>
+        deleteUser(cookies.SEESAW_ACCESS_TOKEN,userId)
+    })
 
 }
 

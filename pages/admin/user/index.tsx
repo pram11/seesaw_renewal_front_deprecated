@@ -4,7 +4,7 @@ import Header from '../../../components/header'
 import AdminSidebar from '../../../components/admin/Sidebar'
 import AdminUserTable from '../../../components/admin/user/UserTable'
 import AdminButton from '../../../components/admin/Button'
-import { useUserList } from '../../../services/users'
+import { useDeleteUser, useUserList } from '../../../services/users'
 import { useCookies } from 'react-cookie'
 
 import AlertModal from '../../../components/modal/AlertModal'
@@ -44,27 +44,29 @@ const AdminUserList = (props) => {
   const [page,setPage] = useState(1);
   const [size,setSize] = useState(10);
   const [userCount,setUserCount] = useState(0);
+  const [userToDelete,setUserToDelete] = useState<Array<string>>([]);
   const userListRequest = useUserList({
     queryType:queryType,
     queryValue:queryValue,
     page:page,
     size:size
   },page)
+  const deleteUserRequest = useDeleteUser();
   
- 
-  // const searchOptionItemList = useCommonCodeChildList({
-  //   parentCode:"AU01"
-  // });
+  const deleteUsers = () => {
+    let selectedUserList:Array<string> = userList.filter((user:any)=>user.isSelected === true).map((user)=>user.id.toString());
+    console.log(selectedUserList);
 
-  // const sortOptionItemList = useCommonCodeChildList({
-  //   parentCode:"AU02"
-  // });
-
+    selectedUserList.forEach((userId)=>{
+      deleteUserRequest.mutate(userId);
+    });
+  }
   
   
   useEffect(()=>{
+    console.log("userListRequest:",userListRequest)
     if(userListRequest.status==="success"){
-      console.log("header:",userListRequest.data)
+      console.log("header:",userListRequest)
       setUserCount(userListRequest.data.count)
       setUserList(userListRequest.data.result)
 
@@ -212,6 +214,7 @@ const AdminUserList = (props) => {
                 text="선택 삭제"
                 rootClassName="admin-button-root-class-name1"
                 type="red"
+                onClick={()=>{deleteUsers()}}
               ></AdminButton>
             </div>
           </div>
