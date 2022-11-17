@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
 import Header from '../../../components/header'
 import AdminSidebar from '../../../components/admin/Sidebar'
 import AdminUserTable from '../../../components/admin/user/UserTable'
@@ -23,8 +22,7 @@ export async function getStaticProps() {
   return {
     props: {
       searchOptionItemList:searchOptionItemList.map((item:any)=>{return {id:item.id.code,value:item.label}}),
-      sortOptionItemList : sortOptionItemList.map((item:any)=>{return {id:item.id.code,value:item.label}})
-      // props for your component
+      sortOptionItemList : sortOptionItemList.map((item:any)=>{return {id:item.id.code,value:item.label}})// 현재 미사용
     },
   }
 }

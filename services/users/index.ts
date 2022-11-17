@@ -6,7 +6,7 @@ import { getUserRoles, useUserRoles } from "../../utils/user";
 const apiAddr = getAPIServerAddress();
 
 const useSignIn=()=>{
-    return useMutation({mutationFn:async requestParam=>{
+    return useMutation({mutationFn:async (requestParam:{email:string,password:string})=>{
         console.log("useSignIn Requested",requestParam);
             const signInForm = {email:requestParam.email,password:requestParam.password}
             const response = await fetch(`${apiAddr}/user/login`,{
@@ -26,15 +26,12 @@ const useSignIn=()=>{
 }
 
 
-const useUserList = (Q:{
+const getUserList=async(accessToken:string,Q:{
     queryType:string,
     queryValue:string,
     page:number|undefined,
     size:number|undefined
-},filter)=> {
-    console.log("useUserList Requested",Q);
-    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    return useQuery(["getUserList",filter],async ()=>{
+})=>{
     if (Q.queryType!==""&&Q.queryValue!=="") {
         var path = `${apiAddr}/user?${Q.queryType}=${Q.queryValue}`;
     } else {
@@ -54,17 +51,59 @@ const useUserList = (Q:{
         credentials:"same-origin",
         headers:{
             "Content-Type":"application/json",
-            "Authorization":cookies.SEESAW_ACCESS_TOKEN
+            "Authorization":accessToken
         },
+    })
+    if (!response.ok){
+        console.warn("Network response Not Succeed")
+        // throw new Error("Network response not succeed");
+    }
+    return {"count":parseInt(response.headers.get("X-Total-Count")??"0"),"result":await response.json(),"status":response.status}
+
+}
+
+const useUserList = (Q:{
+    queryType:string,
+    queryValue:string,
+    page:number|undefined,
+    size:number|undefined
+},filter)=> {
+    console.log("useUserList Requested",Q);
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
+    return useQuery(["getUserList",filter],async ()=>{getUserList(cookies.SEESAW_ACCESS_TOKEN,Q)},{retry:3,enabled:true})
+}
+
+
+const createUser = async (accessToken:string|null,userData:{
+    email:string,
+    password:string,
+    name:string,
+    phonenum:string,
+    nickname:string,
+    address:string,
+    address_extra:string,
+    passport_number:string,
+    alien_registration_number:string
+})=>{
+    const requestHeaders:HeadersInit = {
+        "Content-Type":"application/json",
+    }
+    if (accessToken!==null){
+        requestHeaders["Authorization"] = accessToken;
+    }
+    const response = await fetch(`${apiAddr}/user`,{
+        method:"POST",
+        mode:"cors",
+        credentials:"same-origin",
+        headers:requestHeaders,
+        body:JSON.stringify(userData)
     })
     if (!response.ok){
         console.warn("Network response Not Succeed")
         throw new Error("Network response not succeed");
     }
-    let count = 0;
-    
-    return {"count":parseInt(response.headers.get("X-Total-Count")??"0"),"result":await response.json()}
-},{retry:3,enabled:true})}
+    return response.json()
+}
 
 const useCreateUser=(userData:{
     email:string,
@@ -85,63 +124,61 @@ const useCreateUser=(userData:{
         if(!userRoles.includes("ADMIN")){
             console.log("User is not admin")
             return {data:undefined,isSuccess:false,isError:true,isLoading:false,error:Error("Permission Denied"),refetch:()=>{}}
-        }
-        console.log(`Admin Created User, ${cookies.SEESAW_ACCESS_TOKEN}`)
-    
-        return useMutation(["createUser"],async ()=>{
-            const response = await fetch(`${apiAddr}/user`,{
-                method:"POST",
-                mode:"cors",
-                credentials:"same-origin",
-                headers:{
-                    "Content-Type":"application/json",
-                    "Authorization":cookies.SEESAW_ACCESS_TOKEN
-                },
-                body:JSON.stringify(userData)
-            })
-            return await response
-        },{retry:0})
+        }    
+        return useMutation(["createUser"],async ()=>createUser(cookies.SEESAW_ACCESS_TOKEN,userData),{retry:0})
     }
-    return useMutation(["createUser"],async ()=>{
-        const response = await fetch(`${apiAddr}/user`,{
-            method:"POST",
-            mode:"cors",
-            credentials:"same-origin",
-            headers:{
-                "Content-Type":"application/json",
-            },
-            body:JSON.stringify(userData)
-        })
-        if (!response.ok){
-            console.warn("Network response Not Succeed")
-            throw new Error("Network response not succeed");
-        }
-        return await response.text()
-    },{retry:0});
+    return useMutation(["createUser"],async ()=>createUser(null,userData),{retry:0});
+}
+
+
+const getUser = async (accessToken:string,userId:string)=>{
+    const response = await fetch(`${apiAddr}/user/${userId}`,{
+        method:"GET",
+        mode:"cors",
+        credentials:"same-origin",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":accessToken
+        },
+    })
+    if (!response.ok){
+        console.warn("Network response Not Succeed")
+        
+        throw new Error("Network response not succeed");
+    }
+    return await response.json()
 }
 
 const useUser=(userId:string)=>{
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
     console.log("useUser Requested",userId);
-    return useQuery(["getUser",userId],async ()=>{
-        const response = await fetch(`${apiAddr}/user/${userId}`,{
-            method:"GET",
-            mode:"cors",
-            credentials:"same-origin",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":cookies.SEESAW_ACCESS_TOKEN
-            },
-        })
-        if (!response.ok){
-            console.warn("Network response Not Succeed")
-            throw new Error("Network response not succeed");
-        }
-        return await response.json()
-    },{retry:3,enabled:true})
+    return useQuery(["getUser",userId],()=>getUser(cookies.SEESAW_ACCESS_TOKEN,userId),
+    {retry:3,enabled:true})
 }
 
 
+const updateUser=async (accessToken:string,userId:string,userData:{
+    email:string,
+    password:string,
+    name:string,
+    phonenum:string,
+    nickname:string,
+    address:string,
+    address_extra:string,
+    passport_number:string,
+    alien_registration_number:string
+})=>{
+    return await fetch(`${apiAddr}/user/${userId}`,{
+        method:"PUT",
+        mode:"cors",
+        credentials:"same-origin",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":accessToken
+        },
+        body:JSON.stringify(userData)
+    })
+}
 const useUpdateUser=(userId:string,userData:{
     email:string,
     password:string,
@@ -155,23 +192,33 @@ const useUpdateUser=(userId:string,userData:{
 })=>{
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
     console.log("useUpdateUser Requested",userId,userData);
-    return useMutation(["updateUser",userId],async ()=>{
-        const response = await fetch(`${apiAddr}/user/${userId}`,{
-            method:"PUT",
-            mode:"cors",
-            credentials:"same-origin",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":cookies.SEESAW_ACCESS_TOKEN
-            },
-            body:JSON.stringify(userData)
-        })
-        if (!response.ok){
-            console.warn("Network response Not Succeed")
-            throw new Error("Network response not succeed");
-        }
-        return await response.text()
-    },{retry:0})
+    return useMutation(["updateUser",userId],()=>updateUser(cookies.SEESAW_ACCESS_TOKEN,userId,userData),{retry:0})
+}
+
+
+const deleteUser = async (accessToken:string,userId:string)=>{
+    const response = await fetch(`${apiAddr}/user/${userId}`,{
+        method:"DELETE",
+        mode:"cors",
+        credentials:"same-origin",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":accessToken
+        },
+    })
+    if (!response.ok){
+        console.warn("Network response Not Succeed")
+        throw new Error("Network response not succeed");
+    }
+    return await response.text()
+}
+
+
+const useDeleteUser=(userId:string)=>{
+    const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
+    console.log("useDeleteUser Requested",userId);
+    return useMutation(["deleteUser",userId],()=>deleteUser(cookies.SEESAW_ACCESS_TOKEN,userId),{retry:0})
+
 }
 
 export {useSignIn,useUserList,useCreateUser,useUser}
