@@ -241,4 +241,4 @@ const useConfirmEmail= ()=>{
     return useMutation({mutationFn:async (confirmCode:string)=>confirmEmail(confirmCode)
     })
 }
-export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser,useConfirmEmail}
+export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser,useConfirmEmail,confirmEmail}
