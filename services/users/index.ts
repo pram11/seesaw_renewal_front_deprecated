@@ -222,4 +222,23 @@ const useDeleteUser=()=>{
 
 }
 
-export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser}
+const confirmEmail = async (confirmCode:string)=>{
+    return fetch(
+        `${apiAddr}/user/confirmEmail`,
+        {
+            method:"POST",
+            mode:"cors",
+            credentials:"same-origin",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body:JSON.stringify({"confirmCode":confirmCode})
+        }
+    )
+}
+
+const useConfirmEmail= ()=>{
+    return useMutation({mutationFn:async (confirmCode:string)=>confirmEmail(confirmCode)
+    })
+}
+export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser,useConfirmEmail}
