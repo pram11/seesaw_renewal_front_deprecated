@@ -5,22 +5,27 @@ import {getAPIServerAddress} from "../../utils/config";
 import { getUserRoles, useUserRoles } from "../../utils/user";
 const apiAddr = getAPIServerAddress();
 
+const signIn = async (requestParam:{email:string,password:string})=>{
+    const response = await fetch(`${apiAddr}/user/login`,{
+        method:"POST",
+        mode:"cors",
+        credentials:"same-origin",
+        headers:{
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+        },
+        body:JSON.stringify(requestParam)
+    })
+    return response
+}
+
+
 const useSignIn=()=>{
     return useMutation({mutationFn:async (requestParam:{email:string,password:string})=>{
         console.log("useSignIn Requested",requestParam);
             const signInForm = {email:requestParam.email,password:requestParam.password}
-            const response = await fetch(`${apiAddr}/user/login`,{
-                method:"POST",
-                mode:"cors",
-                credentials:"same-origin",
-                headers:{
-                    "Content-Type":"application/json",
-                    "Accept":"application/json"
-                },
-                body:JSON.stringify(signInForm)
-            })
-            console.log("response:",response.text)
-            return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.text(),status:response.status}
+            const response = await signIn(signInForm)
+            return {accessToken:response.headers.get("Authorization"),refreshToken:response.headers.get("RefreshToken"),response:await response.json(),status:response.status}
         }
     })
 }
@@ -241,4 +246,24 @@ const useConfirmEmail= ()=>{
     return useMutation({mutationFn:async (confirmCode:string)=>confirmEmail(confirmCode)
     })
 }
-export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser,useConfirmEmail,confirmEmail}
+
+const sendEmailConfirm = async (email:string)=>{
+    return fetch(
+        `${apiAddr}/user/sendConfirmMail`,
+        {
+            method:"POST",
+            mode:"cors",
+            credentials:"same-origin",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body:JSON.stringify({"email":email})
+        }
+    )
+}
+
+const useSendEmailConfirm= ()=>{
+    return useMutation({mutationFn:async (email:string)=>sendEmailConfirm(email)
+    })
+}
+export {useSignIn,useUserList,useCreateUser,useUser,useUpdateUser,useDeleteUser,useConfirmEmail,confirmEmail,sendEmailConfirm,useSendEmailConfirm}
