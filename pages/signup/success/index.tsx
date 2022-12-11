@@ -26,32 +26,27 @@ const SignUpSuccess = (props:{
             <div className="sign-up-success-container3">
               <img
                 alt="image"
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src="/assets/common/seesaw_character_01.png"
                 className="sign-up-success-image"
               />
-            </div>
-            <span className="sign-up-success-text">
+              <span className="sign-up-success-text">
               You have Successfully Registered!
             </span>
+            </div>
+            
           </div>
           <div className="sign-up-success-container4">
             <Buttonlg
-              text="Write my Resume"
+              text="Sign in"
               rootClassName="buttonlg-root-class-name"
             ></Buttonlg>
           </div>
-          <div className="sign-up-success-container5">
-            <Buttonlg
-              text="Go find Job"
-              rootClassName="buttonlg-root-class-name2"
-            ></Buttonlg>
-          </div>
+          
         </div>
       </div>
       <style jsx>
         {`
           .sign-up-success-container {
-            width: 100%;
             display: flex;
             overflow: auto;
             min-height: 100vh;
@@ -61,25 +56,33 @@ const SignUpSuccess = (props:{
           }
           .sign-up-success-container1 {
             flex: 1;
-            width: 200px;
+            width:100%;
             display: flex;
+            align-items: center;
             flex-direction: column;
+            padding: var(--dl-space-space-unit);
           }
           .sign-up-success-container2 {
             flex: 1;
-            width: 100%;
+            width: 100vw;
             display: flex;
+            flex-direction: column;
             align-items: flex-start;
           }
           .sign-up-success-container3 {
             flex: 0 0 auto;
             width: 100%;
             display: flex;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: space-around;
+            justify-content: space-around;
           }
           .sign-up-success-image {
-            width: 100px;
+            flex:1;
+            width: 100%;
+            max-width:300px;
             object-fit: cover;
+            margin-bottom: var(--dl-space-space-unit);
           }
           .sign-up-success-container4 {
             width: 100%;
@@ -102,6 +105,7 @@ const SignUpSuccess = (props:{
             }
             .sign-up-success-container2 {
               height: auto;
+              width:100%;
               padding: var(--dl-space-space-unit);
               align-items: center;
               flex-direction: column;
@@ -109,6 +113,7 @@ const SignUpSuccess = (props:{
             }
             .sign-up-success-container3 {
               margin-bottom: var(--dl-space-space-unit);
+              justify-content: center;
             }
             .sign-up-success-image {
               flex: 1;

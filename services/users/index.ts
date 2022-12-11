@@ -103,11 +103,7 @@ const createUser = async (accessToken:string|null,userData:{
         headers:requestHeaders,
         body:JSON.stringify(userData)
     })
-    if (!response.ok){
-        console.warn("Network response Not Succeed")
-        throw new Error("Network response not succeed");
-    }
-    return response.json()
+    return response
 }
 
 const useCreateUser=(userData:{
@@ -128,11 +124,15 @@ const useCreateUser=(userData:{
         console.log("userRoles:",userRoles)
         if(!userRoles.includes("ADMIN")){
             console.log("User is not admin")
-            return {data:undefined,isSuccess:false,isError:true,isLoading:false,error:Error("Permission Denied"),refetch:()=>{}}
+            return useMutation({mutationFn: async ()=>{
+                throw Error;
+                // return {data:undefined,isSuccess:false,isError:true,isLoading:false,error:Error("Permission Denied"),refetch:()=>{}}
+            }})
         }    
-        return useMutation(["createUser"],async ()=>createUser(cookies.SEESAW_ACCESS_TOKEN,userData),{retry:0})
+        return useMutation({
+            mutationFn:async ()=>createUser(cookies.SEESAW_ACCESS_TOKEN,userData)})
     }
-    return useMutation(["createUser"],async ()=>createUser(null,userData),{retry:0});
+    return useMutation({mutationFn:async ()=>createUser(null,userData)});
 }
 
 

@@ -18,6 +18,7 @@ const SignUp2 = (props: {}) => {
             ? ""
             : router.query.phonenum.toString()
     );
+
     const email = router.query.email?.toString()!;
     const password = router.query.password?.toString()!;
     const createUser = useCreateUser(
@@ -31,11 +32,11 @@ const SignUp2 = (props: {}) => {
             address_extra: "",
             passport_number: "",
             alien_registration_number: "",
-        },
-        false
+        },false
     );
     const onClickNext = () => {
-        createUser.mutate({
+        
+        createUser.mutateAsync({userData:{
             email: email,
             password: password,
             name: "",
@@ -45,7 +46,7 @@ const SignUp2 = (props: {}) => {
             address_extra: "",
             passport_number: "",
             alien_registration_number: "",
-        });
+        }});
     };
 
     const onClickPrev = () => {
@@ -64,10 +65,9 @@ const SignUp2 = (props: {}) => {
     };
     useEffect(() => {
         if (createUser.status === "success") {
-            alert("회원가입이 완료되었습니다.");
             router.push(
-                { pathname: "/signin", query: { email: email } },
-                "/signin"
+                { pathname: "/signup/success", query: { email: email } },
+                "/signup/success"
             );
         }
     }, [createUser.data]);

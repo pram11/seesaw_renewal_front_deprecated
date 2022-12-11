@@ -72,7 +72,7 @@ const Login = (props:any) => {
           <div className="login-container1">
             <img
               alt="IMAGE03A12244"
-              src="/playground_assets/image03a12244-1qry-500w.png"
+              src="/assets/login/seesaw_logo_01.png"
               className="login-i-m-a-g-e03a1"
             />
           </div>
