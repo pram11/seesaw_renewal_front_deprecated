@@ -5,10 +5,12 @@ import BackHeader from '../../../components/back-header';
 import Buttonlg from '../../../components/Buttonlg'
 import { useRouter } from 'next/router';
 import { useSendEmailConfirm } from '../../../services/users';
+import AlertModal from '../../../components/modal/AlertModal';
 
 const SignUpSuccess = () => {
   const router = useRouter();
   const sendMail = useSendEmailConfirm();
+  const [sendMailModalState,setSendMailModalState] = React.useState(false);
   return (
     <>
       <div className="sign-up-success-container">
@@ -42,10 +44,11 @@ const SignUpSuccess = () => {
           <div className="sign-up-success-container4">
             <small 
             className='sign-up-success-send-again'
-            onClick={()=>{
-              let response = sendMail.mutateAsync(router.query.email as string);
-              console.log(response);
-              
+            onClick={async ()=>{
+              let response = await sendMail.mutateAsync(router.query.email as string);
+              if (response.status===200){
+                setSendMailModalState(true);
+              }
             }}>email not received? send again!</small>
             <Buttonlg
               text="Sign in"
@@ -58,6 +61,21 @@ const SignUpSuccess = () => {
           </div>
           
         </div>
+        {
+          sendMailModalState &&
+          <AlertModal 
+          headerText="Email Sent"
+          bodyText="Please check your email and verify your account."
+          footerText="OK"
+          onClose = {()=>{
+            setSendMailModalState(false);
+          }}
+          />
+        }
+
+            
+
+
       </div>
       <style jsx>
         {`
