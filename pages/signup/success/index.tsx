@@ -1,12 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
 
-import BackHeader from '../../../components/back-header'
-import Buttonlg from '../../../components/buttonlg'
+import BackHeader from '../../../components/back-header';
+import Buttonlg from '../../../components/Buttonlg'
+import { useRouter } from 'next/router';
 
-const SignUpSuccess = (props:{
-  
-}) => {
+const SignUpSuccess = () => {
+  const router = useRouter();
   return (
     <>
       <div className="sign-up-success-container">
@@ -31,6 +31,8 @@ const SignUpSuccess = (props:{
               />
               <span className="sign-up-success-text">
               You have Successfully Registered!
+              <br />
+              Please check and verify your email.
             </span>
             </div>
             
@@ -39,6 +41,10 @@ const SignUpSuccess = (props:{
             <Buttonlg
               text="Sign in"
               rootClassName="buttonlg-root-class-name"
+              onClick={() => {
+                router.push({pathname:'/signin',query:{email:router.query.email}},"/signin");
+              }}
+
             ></Buttonlg>
           </div>
           
@@ -74,7 +80,7 @@ const SignUpSuccess = (props:{
             width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: space-around;
+            align-items: center;
             justify-content: space-around;
           }
           .sign-up-success-image {
