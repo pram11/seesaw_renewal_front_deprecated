@@ -4,9 +4,11 @@ import Head from 'next/head'
 import BackHeader from '../../../components/back-header';
 import Buttonlg from '../../../components/Buttonlg'
 import { useRouter } from 'next/router';
+import { useSendEmailConfirm } from '../../../services/users';
 
 const SignUpSuccess = () => {
   const router = useRouter();
+  const sendMail = useSendEmailConfirm();
   return (
     <>
       <div className="sign-up-success-container">
@@ -38,6 +40,13 @@ const SignUpSuccess = () => {
             
           </div>
           <div className="sign-up-success-container4">
+            <small 
+            className='sign-up-success-send-again'
+            onClick={()=>{
+              let response = sendMail.mutateAsync(router.query.email as string);
+              console.log(response);
+              
+            }}>email not received? send again!</small>
             <Buttonlg
               text="Sign in"
               rootClassName="buttonlg-root-class-name"
@@ -96,6 +105,11 @@ const SignUpSuccess = () => {
             align-self: center;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+
+          }
+          .sign-up-success-send-again{
+            margin-bottom: var(--dl-space-space-unit);
           }
           .sign-up-success-container5 {
             width: 100%;
@@ -132,6 +146,7 @@ const SignUpSuccess = () => {
             }
             .sign-up-success-container4 {
               height: auto;
+              
             }
             .sign-up-success-container5 {
               height: auto;
