@@ -16,6 +16,9 @@ const Buttonlg = (props) => {
             padding:0;
             display: flex;
             position: relative;
+            align-items: space-between;
+            justify-content: space-around;
+            
           }
           .buttonlg-buttonlg {
             width:calc(479px - 32px);

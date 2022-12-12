@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 
 import PropTypes from 'prop-types'
+import { Router,useRouter } from 'next/router'
 
-const BackHeader = (props) => {
+export interface BackHeaderTypes {
+  headerTitle: string,
+  headerRightText: string
+  rootClassName: string
+  onClick:MouseEventHandler<HTMLDivElement> | undefined
+}
+const BackHeader = (props:BackHeaderTypes) => {
+  const router = useRouter()
   return (
     <>
-      <div className={`back-header-back-header ${props.rootClassName} `}>
+      <div className={`back-header-back-header ${props.rootClassName} `}
+        onClick={props.onClick===undefined?router.back():props.onClick}
+        
+      >
         <img
-          alt={props.Vector_alt}
-          src={props.Vector_src}
+          alt={"backButton"}
+          src={'/playground_assets/vectori260-oyhk.svg'}
           className="back-header-vector"
         />
         <span className="back-header-text">{props.headerTitle}</span>
@@ -89,19 +100,17 @@ const BackHeader = (props) => {
 }
 
 BackHeader.defaultProps = {
-  Vector_src: '/playground_assets/vectori260-oyhk.svg',
-  Vector_alt: 'VectorI260',
   headerTitle: '타이틀명',
   headerRightText: '메뉴',
   rootClassName: '',
+  onClick:undefined
 }
 
 BackHeader.propTypes = {
-  Vector_src: PropTypes.string,
-  Vector_alt: PropTypes.string,
   headerTitle: PropTypes.string,
   headerRightText: PropTypes.string,
   rootClassName: PropTypes.string,
+  onClick:PropTypes.func,
 }
 
 export default BackHeader

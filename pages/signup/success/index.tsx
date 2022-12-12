@@ -1,12 +1,16 @@
 import React from 'react'
 import Head from 'next/head'
 
-import BackHeader from '../../../components/back-header'
-import Buttonlg from '../../../components/buttonlg'
+import BackHeader from '../../../components/BackHeader';
+import Buttonlg from '../../../components/Buttonlg'
+import { useRouter } from 'next/router';
+import { useSendEmailConfirm } from '../../../services/users';
+import AlertModal from '../../../components/modal/AlertModal';
 
-const SignUpSuccess = (props:{
-  
-}) => {
+const SignUpSuccess = () => {
+  const router = useRouter();
+  const sendMail = useSendEmailConfirm();
+  const [sendMailModalState,setSendMailModalState] = React.useState(false);
   return (
     <>
       <div className="sign-up-success-container">
@@ -20,38 +24,64 @@ const SignUpSuccess = (props:{
         <BackHeader
           rootClassName="back-header-root-class-name4"
           headerRightText=" "
+          onClick={() => router.push("/signin")
+          }
         ></BackHeader>
         <div className="sign-up-success-container1">
           <div className="sign-up-success-container2">
             <div className="sign-up-success-container3">
               <img
                 alt="image"
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src="/assets/common/seesaw_character_01.png"
                 className="sign-up-success-image"
               />
-            </div>
-            <span className="sign-up-success-text">
+              <span className="sign-up-success-text">
               You have Successfully Registered!
+              <br />
+              Please check and verify your email.
             </span>
+            </div>
+            
           </div>
           <div className="sign-up-success-container4">
+            <small 
+            className='sign-up-success-send-again'
+            onClick={async ()=>{
+              let response = await sendMail.mutateAsync(router.query.email as string);
+              if (response.status===200){
+                setSendMailModalState(true);
+              }
+            }}>email not received? send again!</small>
             <Buttonlg
-              text="Write my Resume"
+              text="Sign in"
               rootClassName="buttonlg-root-class-name"
+              onClick={() => {
+                router.push({pathname:'/signin',query:{email:router.query.email}},"/signin");
+              }}
+
             ></Buttonlg>
           </div>
-          <div className="sign-up-success-container5">
-            <Buttonlg
-              text="Go find Job"
-              rootClassName="buttonlg-root-class-name2"
-            ></Buttonlg>
-          </div>
+          
         </div>
+        {
+          sendMailModalState &&
+          <AlertModal 
+          headerText="Email Sent"
+          bodyText="Please check your email and verify your account."
+          footerText="OK"
+          onClose = {()=>{
+            setSendMailModalState(false);
+          }}
+          />
+        }
+
+            
+
+
       </div>
       <style jsx>
         {`
           .sign-up-success-container {
-            width: 100%;
             display: flex;
             overflow: auto;
             min-height: 100vh;
@@ -61,25 +91,33 @@ const SignUpSuccess = (props:{
           }
           .sign-up-success-container1 {
             flex: 1;
-            width: 200px;
+            width:100%;
             display: flex;
+            align-items: center;
             flex-direction: column;
+            padding: var(--dl-space-space-unit);
           }
           .sign-up-success-container2 {
             flex: 1;
-            width: 100%;
+            width: 100vw;
             display: flex;
+            flex-direction: column;
             align-items: flex-start;
           }
           .sign-up-success-container3 {
             flex: 0 0 auto;
             width: 100%;
             display: flex;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
           }
           .sign-up-success-image {
-            width: 100px;
+            flex:1;
+            width: 100%;
+            max-width:300px;
             object-fit: cover;
+            margin-bottom: var(--dl-space-space-unit);
           }
           .sign-up-success-container4 {
             width: 100%;
@@ -87,6 +125,11 @@ const SignUpSuccess = (props:{
             align-self: center;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+
+          }
+          .sign-up-success-send-again{
+            margin-bottom: var(--dl-space-space-unit);
           }
           .sign-up-success-container5 {
             width: 100%;
@@ -102,6 +145,7 @@ const SignUpSuccess = (props:{
             }
             .sign-up-success-container2 {
               height: auto;
+              width:100%;
               padding: var(--dl-space-space-unit);
               align-items: center;
               flex-direction: column;
@@ -109,6 +153,7 @@ const SignUpSuccess = (props:{
             }
             .sign-up-success-container3 {
               margin-bottom: var(--dl-space-space-unit);
+              justify-content: center;
             }
             .sign-up-success-image {
               flex: 1;
@@ -121,6 +166,7 @@ const SignUpSuccess = (props:{
             }
             .sign-up-success-container4 {
               height: auto;
+              
             }
             .sign-up-success-container5 {
               height: auto;

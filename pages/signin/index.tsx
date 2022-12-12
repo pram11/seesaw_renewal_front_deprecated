@@ -9,17 +9,20 @@ import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { seesawTokenState } from '../../states'
-import { useSignIn } from '../../services/users'
+import { useSendEmailConfirm, useSignIn } from '../../services/users'
 import { getUserRoles, useUserRoles } from '../../utils/user'
 import AlertModal from '../../components/modal/AlertModal'
 
 const Login = (props:any) => {
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN',"SEESAW_REFRESH_TOKEN"]);
-  const [modalState,setModalState] = useState(false);
+  const [loginFailureModalState,setLoginFailureModalState] = useState(false);
+  const [emailConfirmModalState,setEmailConfirmModalState] = useState(false);
+  const [networkErrorModalState,setNetworkErrorModalState] = useState(false);
   const [email,setEmail] = React.useState(router.query.email===undefined?'':router.query.email.toString());
   const [password,setPassword] = React.useState("");
   const signIn = useSignIn();
+  const sendConfirmEmail = useSendEmailConfirm();
   const onClickSignIn = async () => {
     let res = await signIn.mutateAsync({email:email,password:password});
     console.log(res)
@@ -37,8 +40,19 @@ const Login = (props:any) => {
       }
       console.log(roles)
     }else{
-      console.log("로그인 실패")
-      setModalState(true);
+      switch(res.response.errorCode){
+        case "LOGIN_FAILURE":
+          setLoginFailureModalState(true);
+          break;
+        case "EMAIL_NOT_CONFIRMED":
+          setEmailConfirmModalState(true);
+          await sendConfirmEmail.mutateAsync(email);
+          break;
+        default:
+          setNetworkErrorModalState(true);
+          break;
+      }
+    
     }
   }
   const onSubmit = (e:any) => {
@@ -58,7 +72,7 @@ const Login = (props:any) => {
           <div className="login-container1">
             <img
               alt="IMAGE03A12244"
-              src="/playground_assets/image03a12244-1qry-500w.png"
+              src="/assets/login/seesaw_logo_01.png"
               className="login-i-m-a-g-e03a1"
             />
           </div>
@@ -80,8 +94,28 @@ const Login = (props:any) => {
         </div>
       </div>
       {
-        modalState?(
-          <AlertModal headerText="Alert" bodyText="Invalid email or password" footerText="OK" onClose={()=>{setModalState(false)}} />
+        loginFailureModalState?(
+          <AlertModal headerText="Alert" bodyText="Invalid email or password" footerText="OK" onClose={()=>{setLoginFailureModalState(false)}} />
+          
+        ):null
+
+      }
+      {
+        emailConfirmModalState?(
+          <AlertModal headerText="Alert" bodyText="
+          Email not confirmed. 
+          we sent you email again. 
+          please check your email and varify your email.
+          " footerText="OK" onClose={()=>{setEmailConfirmModalState(false)}} />
+          
+        ):null
+
+      }
+      {
+        networkErrorModalState?(
+          <AlertModal headerText="Alert" bodyText="
+          Network error.
+          " footerText="OK" onClose={()=>{setNetworkErrorModalState(false)}} />
           
         ):null
 
