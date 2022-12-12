@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 
-import BackHeader from '../../../components/back-header';
+import BackHeader from '../../../components/BackHeader';
 import Buttonlg from '../../../components/Buttonlg'
 import { useRouter } from 'next/router';
 import { useSendEmailConfirm } from '../../../services/users';
@@ -24,6 +24,8 @@ const SignUpSuccess = () => {
         <BackHeader
           rootClassName="back-header-root-class-name4"
           headerRightText=" "
+          onClick={() => router.push("/signin")
+          }
         ></BackHeader>
         <div className="sign-up-success-container1">
           <div className="sign-up-success-container2">

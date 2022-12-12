@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 
-import BackHeader from '../../../components/back-header'
+import BackHeader from '../../../components/BackHeader'
 import BoxInput from '../../../components/box-input'
 import TrueFalseButton from '../../../components/true-false-button'
 import Link from 'next/link'
