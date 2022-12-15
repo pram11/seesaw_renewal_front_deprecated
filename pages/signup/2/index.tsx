@@ -6,6 +6,7 @@ import BoxInput from "../../../components/box-input";
 import TrueFalseButton from "../../../components/true-false-button";
 import { useRouter } from "next/router";
 import { useCreateUser } from "../../../services/users";
+import TermAgreementForm from "../../../components/forms/TermAgreement";
 const SignUp2 = (props: {}) => {
     const router = useRouter();
     const [nickname, setNickname] = React.useState<string>(
@@ -105,36 +106,8 @@ const SignUp2 = (props: {}) => {
                         setPhonenum(e.target.value);
                     }}
                 ></BoxInput>
-                <div className="sign-up2-group27">
-                    <div className="sign-up2-group86">
-                        <input
-                            type="checkbox"
-                            checked="true"
-                            className="sign-up2-checkbox"
-                        />
-                        <span className="sign-up2-text">Phone Number</span>
-                    </div>
-                    <div className="sign-up2-group28">
-                        <input
-                            type="checkbox"
-                            checked="true"
-                            className="sign-up2-checkbox1"
-                        />
-                        <span className="sign-up2-text1">
-                            Guide for Terms of Service
-                        </span>
-                    </div>
-                    <div className="sign-up2-group281">
-                        <input
-                            type="checkbox"
-                            checked="true"
-                            className="sign-up2-checkbox2"
-                        />
-                        <span className="sign-up2-text2">
-                            Guide for private information collection and use
-                        </span>
-                    </div>
-                </div>
+                <TermAgreementForm typeCode="SIGN_UP" title="약관" />
+                
                 <TrueFalseButton
                     text="Prev"
                     text1="Next"

@@ -11,10 +11,13 @@ export interface BackHeaderTypes {
 }
 const BackHeader = (props:BackHeaderTypes) => {
   const router = useRouter()
+  const onClickGoBack = () => {
+    props.onClick===undefined?router.back():props.onClick
+  }
   return (
     <>
       <div className={`back-header-back-header ${props.rootClassName} `}
-        onClick={props.onClick===undefined?router.back():props.onClick}
+        onClick={onClickGoBack}
         
       >
         <img
