@@ -4,8 +4,9 @@ import React from 'react'
 type TrueFalseButtonTypes ={
     trueButtonText: string,
     falseButtonText: string,
-    onClickTrue: Function|undefined,
-    onClickFalse: Function|undefined,
+    onClickTrue: Function,
+    onClickFalse: Function,
+    rootClassName?: string,
   }
 const TrueFalseButton = (props:TrueFalseButtonTypes) => {
   return (
