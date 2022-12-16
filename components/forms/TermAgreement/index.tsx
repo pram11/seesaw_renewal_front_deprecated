@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 import AlertModal from "../../modal/AlertModal";
 import TermModal from "../../modal/TermModal";
 
@@ -91,6 +91,7 @@ export type TermAgreementSelectorProps = {
     title: string;
     content: string;
     checked: boolean;
+    required: boolean;
     onCheckChanged: (id: string, checked: boolean) => void;
     onClickShowModal: (id: string) => void;
 };
@@ -156,6 +157,7 @@ const TermAgreementSelectorItem = (props: TermAgreementSelectorProps) => {
 type TermAgreementFormProps = {
     title: string,
     items: Array<TermAgreementSelectorProps>,
+    getAgreementList: Function,
 };
 const TermAgreementForm = (props:TermAgreementFormProps) => {
     const [titleIsChecked, setTitleIsChecked] = React.useState(false);
@@ -195,6 +197,7 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
             };
         });
         setAgreementList(newList);
+        props.getAgreementList(newList);
         console.log(newList)
     };
     const updateItemChanged = (id:string,checked:boolean) => {
@@ -209,8 +212,10 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
             return item;
         });
         setAgreementList(newList);
+        props.getAgreementList(newList);
     };
-
+    
+    
     return (
         <div className="sign-up2-group27">
             <TermAgreementTitle title={props.title} onClick={onClickTermTitle} checked={titleIsChecked}  />

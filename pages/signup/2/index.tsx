@@ -8,8 +8,11 @@ import { useRouter } from "next/router";
 import { useCreateUser } from "../../../services/users";
 import TermAgreementForm, { TermAgreementSelectorProps } from "../../../components/forms/TermAgreement";
 import { getTermList } from "../../../services/terms";
+import AlertModal from "../../../components/modal/AlertModal";
 const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
     const router = useRouter();
+    const [showAlertModal, setShowAlertModal] = React.useState<boolean>(false);
+    const [alertModalMessage, setAlertModalMessage] = React.useState<string>("");
     const [nickname, setNickname] = React.useState<string>(
         router.query.nickname === undefined
             ? ""
@@ -20,9 +23,10 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             ? ""
             : router.query.phonenum.toString()
     );
-
+    
     const email = router.query.email?.toString()!;
     const password = router.query.password?.toString()!;
+    const [agreementList,setAgreementList] = React.useState<Array<TermAgreementSelectorProps>>(props.termList);
     const createUser = useCreateUser(
         {
             email: email,
@@ -36,9 +40,24 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             alien_registration_number: "",
         },false
     );
-    const onClickNext = () => {
-        
-        createUser.mutateAsync({userData:{
+    const checkAgreement = () =>{
+        let isAgreed = true;
+        agreementList.forEach((agreement)=>{
+            if (!agreement.checked&&agreement.required){
+                isAgreed = false;
+            }
+        });
+        return isAgreed;
+    }
+    const onClickNext = async () => {
+        console.log("agreementList:",agreementList);
+        if (!checkAgreement()){
+            console.warn("failed to agree terms");
+            setAlertModalMessage("약관에 동의해주세요");
+            setShowAlertModal(true);
+            return;
+        }
+        let res = await createUser.mutateAsync({userData:{
             email: email,
             password: password,
             name: "",
@@ -49,6 +68,16 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             passport_number: "",
             alien_registration_number: "",
         }});
+        if (res.status === 201){
+            router.push(
+                { pathname: "/signup/success", query: { email: email } },
+                "/signup/success"
+            );
+        }else{
+            console.warn("failed to create user");
+            setAlertModalMessage("회원가입에 실패했습니다. 입력을 확인해주세요");
+            setShowAlertModal(true);
+        }
     };
 
     const onClickPrev = () => {
@@ -65,14 +94,10 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             "/signup/1"
         );
     };
-    useEffect(() => {
-        if (createUser.status === "success") {
-            router.push(
-                { pathname: "/signup/success", query: { email: email } },
-                "/signup/success"
-            );
-        }
-    }, [createUser.data]);
+    const closeAlertModal = () => {
+        setAlertModalMessage("");
+        setShowAlertModal(false);
+    };
 
     return (
         <>
@@ -107,7 +132,7 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
                         setPhonenum(e.target.value);
                     }}
                 ></BoxInput>
-                <TermAgreementForm title="약관" items={props.termList} />
+                <TermAgreementForm title="약관" items={props.termList} getAgreementList={(list:Array<TermAgreementSelectorProps>)=>{setAgreementList(list)}} />
                 
                 
                 <TrueFalseButton
@@ -117,6 +142,11 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
                     onClickTrue={onClickNext}
                     onClickFalse={onClickPrev}
                 ></TrueFalseButton>
+                {showAlertModal&&<AlertModal 
+                headerText="알림"
+                bodyText={alertModalMessage}
+                onClose={closeAlertModal}
+                />}
             </div>
             <style jsx>
                 {`

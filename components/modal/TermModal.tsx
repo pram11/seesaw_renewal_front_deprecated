@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect } from "react";
 
-type AlertModalProps = {
+type TermModalProps = {
     headerText:string,
     bodyText:string,
     footerText:string,
@@ -10,7 +10,7 @@ type AlertModalProps = {
     onConfirm?:React.MouseEventHandler
 }
 
-const AlertModal = (props:AlertModalProps) => {
+const TermModal = (props:TermModalProps) => {
     useEffect(()=>{
         console.log("AlertModal");
     },[])
@@ -111,7 +111,7 @@ const AlertModal = (props:AlertModalProps) => {
     )
 
 }
-AlertModal.defaultProps = {
+TermModal.defaultProps = {
     headerText: "Alert",
     bodyText: "Alert",
     footerText: "OK",
@@ -119,6 +119,6 @@ AlertModal.defaultProps = {
 }
 
 
-export default AlertModal
+export default TermModal
 ;
 
