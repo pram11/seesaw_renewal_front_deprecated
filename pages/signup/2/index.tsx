@@ -89,7 +89,7 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
                     rootClassName="back-header-root-class-name3"
                     headerRightText=" "
                 ></BackHeader>
-                <BoxInput
+                    <BoxInput
                     inputText="Please enter your nickname"
                     inputTitle="NICKNAME"
                     rootClassName="box-input-root-class-name3"
@@ -109,6 +109,7 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
                 ></BoxInput>
                 <TermAgreementForm title="약관" items={props.termList} />
                 
+                
                 <TrueFalseButton
                     falseButtonText="Prev"
                     trueButtonText="Next"
@@ -119,6 +120,10 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             </div>
             <style jsx>
                 {`
+                    .form-wrapper {
+                        flex:1;
+                        flex-direction: row
+                    }
                     .sign-up2-container {
                         width: 100%;
                         display: flex;

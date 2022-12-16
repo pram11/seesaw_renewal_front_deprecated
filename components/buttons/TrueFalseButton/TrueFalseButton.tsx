@@ -66,7 +66,7 @@ const TrueFalseButton = (props:TrueFalseButtonTypes) => {
           }
 
           .true-false-button-root-class-name3 {
-            top: 420px;
+            // top: 420px;
             left: 0px;
             position: static;
             align-self: center;
@@ -74,7 +74,7 @@ const TrueFalseButton = (props:TrueFalseButtonTypes) => {
           @media (max-width: 479px) {
             .true-false-button-true-false-button {
               height: 90px;
-              position: relative;
+              // position: relative;
             }
             .true-false-button-button {
               height: 90px;

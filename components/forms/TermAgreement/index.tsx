@@ -1,5 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import AlertModal from "../../modal/AlertModal";
+import TermModal from "../../modal/TermModal";
 
 
 const TermAgreementTitle = (props:{title:string,onClick:MouseEventHandler,checked:boolean}) => {
@@ -172,6 +173,11 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
     };
     const onClickCloseTermModal = () => {
         setShowTermModal(false);
+        setTermModalContents({id:"",title:"",content:""});
+    }
+        
+    const onClickConfirmTermModal = () => {
+        setShowTermModal(false);
         updateItemChanged(termModalContents.id,true);
         setTermModalContents({id:"",title:"",content:""});
     }
@@ -214,10 +220,13 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
             onClickShowModal={(id:string)=>onClickShowTermModal(id)}
             />
             {showTermModal&&
-            <AlertModal headerText={termModalContents.title}
+            <TermModal headerText={termModalContents.title}
 
                 bodyText={termModalContents.content}
-                onClose={()=>onClickCloseTermModal()} />
+                onClose={()=>onClickCloseTermModal()}
+                onConfirm={()=>onClickConfirmTermModal()}
+                footerText="Agree"
+                 />
         }
             <style jsx>{`
             .sign-up2-group27 {
