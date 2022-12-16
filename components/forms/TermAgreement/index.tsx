@@ -165,8 +165,8 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
     const onClickShowTermModal = (id:string) => {
         setTermModalContents({
             id:id,
-            content:agrementList.find((item)=>item.id===id).content,
-            title:agrementList.find((item)=>item.id===id).title
+            content:agrementList.find((item)=>item.id===id)!.content,
+            title:agrementList.find((item)=>item.id===id)!.title
         });
         setShowTermModal(true);
     };
