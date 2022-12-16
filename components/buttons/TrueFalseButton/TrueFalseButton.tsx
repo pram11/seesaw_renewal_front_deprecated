@@ -1,12 +1,11 @@
 import React from 'react'
 
-import PropTypes from 'prop-types'
 
 type TrueFalseButtonTypes ={
     trueButtonText: string,
     falseButtonText: string,
-    onClickTrue: PropTypes.func.isRequired,
-    onClickFalse: PropTypes.func.isRequired,
+    onClickTrue: Function|undefined,
+    onClickFalse: Function|undefined,
   }
 const TrueFalseButton = (props:TrueFalseButtonTypes) => {
   return (
