@@ -6,8 +6,9 @@ import BoxInput from "../../../components/box-input";
 import TrueFalseButton from "../../../components/true-false-button";
 import { useRouter } from "next/router";
 import { useCreateUser } from "../../../services/users";
-import TermAgreementForm from "../../../components/forms/TermAgreement";
-const SignUp2 = (props: {}) => {
+import TermAgreementForm, { TermAgreementSelectorProps } from "../../../components/forms/TermAgreement";
+import { getTermList } from "../../../services/terms";
+const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
     const router = useRouter();
     const [nickname, setNickname] = React.useState<string>(
         router.query.nickname === undefined
@@ -106,7 +107,7 @@ const SignUp2 = (props: {}) => {
                         setPhonenum(e.target.value);
                     }}
                 ></BoxInput>
-                <TermAgreementForm typeCode="SIGN_UP" title="약관" />
+                <TermAgreementForm title="약관" items={props.termList} />
                 
                 <TrueFalseButton
                     text="Prev"
@@ -263,5 +264,15 @@ const SignUp2 = (props: {}) => {
         </>
     );
 };
+
+export const getServerSideProps = async (context) => {
+    const res = await (await getTermList({typeCode:"SIGN_UP"})).json();
+    console.log(res)
+    return {props:{
+        termList: res
+        }
+    }
+}
+
 
 export default SignUp2;

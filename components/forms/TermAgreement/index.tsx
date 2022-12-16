@@ -77,7 +77,7 @@ const TermAgreementSelectorList = (props:TermAgreementSelectorListProps) => {
 };
 
 
-type TermAgreementSelectorProps = {
+export type TermAgreementSelectorProps = {
     id: string;
     title: string;
     content: string;
@@ -142,8 +142,8 @@ const TermAgreementSelectorItem = (props: TermAgreementSelectorProps) => {
 };
 
 type TermAgreementFormProps = {
-    typeCode: string,
-    title: string
+    title: string,
+    items: Array<TermAgreementSelectorProps>,
 };
 const TermAgreementForm = (props:TermAgreementFormProps) => {
     const tempItems = [
@@ -163,7 +163,7 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
     return (
         <div className="sign-up2-group27">
             <TermAgreementTitle title={props.title} />
-            <TermAgreementSelectorList items = {tempItems} />
+            <TermAgreementSelectorList items = {props.items} />
             <style jsx>{`
             .sign-up2-group27 {
                 width: 100%;
@@ -180,5 +180,6 @@ const TermAgreementForm = (props:TermAgreementFormProps) => {
         </div>
     );
 };
+
 
 export default TermAgreementForm;
