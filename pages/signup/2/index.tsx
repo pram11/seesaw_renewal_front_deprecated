@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import BackHeader from "../../../components/BackHeader";
 import BoxInput from "../../../components/box-input";
-import TrueFalseButton from "../../../components/true-false-button";
+import TrueFalseButton from "../../../components/buttons/TrueFalseButton/TrueFalseButton";
 import { useRouter } from "next/router";
 import { useCreateUser } from "../../../services/users";
 import TermAgreementForm, { TermAgreementSelectorProps } from "../../../components/forms/TermAgreement";
@@ -110,8 +110,8 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
                 <TermAgreementForm title="약관" items={props.termList} />
                 
                 <TrueFalseButton
-                    text="Prev"
-                    text1="Next"
+                    falseButtonText="Prev"
+                    trueButtonText="Next"
                     rootClassName="true-false-button-root-class-name3"
                     onClickTrue={onClickNext}
                     onClickFalse={onClickPrev}

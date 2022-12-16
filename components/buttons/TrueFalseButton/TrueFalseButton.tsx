@@ -2,17 +2,23 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
-const TrueFalseButton = (props) => {
+type TrueFalseButtonTypes ={
+    trueButtonText: string,
+    falseButtonText: string,
+    onClickTrue: PropTypes.func.isRequired,
+    onClickFalse: PropTypes.func.isRequired,
+  }
+const TrueFalseButton = (props:TrueFalseButtonTypes) => {
   return (
     <>
       <div
         className={`true-false-button-true-false-button ${props.rootClassName} `}
       >
         <button className="true-false-button-button button" onClick={()=>props.onClickFalse()}>
-          <span className="true-false-button-text">{props.text}</span>
+          <span className="true-false-button-text">{props.falseButtonText}</span>
         </button>
         <button className="true-false-button-button1 button" onClick={()=>props.onClickTrue()}>
-          <span className="true-false-button-text1">{props.text1}</span>
+          <span className="true-false-button-text1">{props.trueButtonText}</span>
         </button>
       </div>
       <style jsx>
@@ -136,12 +142,5 @@ TrueFalseButton.defaultProps = {
   text: 'Button',
 }
 
-TrueFalseButton.propTypes = {
-  rootClassName: PropTypes.string,
-  text1: PropTypes.string,
-  text: PropTypes.string,
-  onClickTrue: PropTypes.func.isRequired,
-  onClickFalse: PropTypes.func.isRequired,
-}
 
 export default TrueFalseButton
