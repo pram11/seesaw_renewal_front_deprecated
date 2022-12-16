@@ -22,6 +22,7 @@ const TrueFalseButton = (props) => {
             width: 100%;
             display: flex;
             position: relative;
+            align-self:flex-end;
             align-items: flex-start;
             justify-content: center;
           }

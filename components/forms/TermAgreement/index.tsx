@@ -1,12 +1,13 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
+import AlertModal from "../../modal/AlertModal";
 
 
-const TermAgreementTitle = (props:{title:string}) => {
+const TermAgreementTitle = (props:{title:string,onClick:MouseEventHandler,checked:boolean}) => {
     return (
-        <div className="sign-up2-group86">
+        <div className="sign-up2-group86" onClick={props.onClick}>
             <input
                 type="checkbox"
-                checked="true"
+                checked={props.checked}
                 className="sign-up2-checkbox"
             />
             <span className="sign-up2-text">{props.title}</span>
@@ -58,9 +59,14 @@ const TermAgreementTitle = (props:{title:string}) => {
 
 type TermAgreementSelectorListProps = {
     items: Array<TermAgreementSelectorProps>,
+    onCheckChanged: Function,
+    onClickShowModal: Function,
 };
 
 const TermAgreementSelectorList = (props:TermAgreementSelectorListProps) => {
+    const onItemCheckChanged = (id:string,checked:boolean) => {
+        props.onCheckChanged(id,checked);
+    }
     return (
         <div>
         {props.items.map((item:TermAgreementSelectorProps) => {
@@ -70,6 +76,8 @@ const TermAgreementSelectorList = (props:TermAgreementSelectorListProps) => {
                 title={item.title}
                 content={item.content}
                 checked={item.checked}
+                onCheckChanged={onItemCheckChanged}
+                onClickShowModal={()=>props.onClickShowModal(item.id)}
             />
         );
     })}
@@ -82,16 +90,19 @@ export type TermAgreementSelectorProps = {
     title: string;
     content: string;
     checked: boolean;
+    onCheckChanged: (id: string, checked: boolean) => void;
+    onClickShowModal: (id: string) => void;
 };
 const TermAgreementSelectorItem = (props: TermAgreementSelectorProps) => {
     return (
         <div className="sign-up2-group281">
             <input
+                onClick={()=>props.onCheckChanged(props.id, !props.checked)}
                 type="checkbox"
                 checked={props.checked}
                 className="sign-up2-checkbox2"
             />
-            <span className="sign-up2-text2">
+            <span className="sign-up2-text2" onClick={()=>props.onClickShowModal(props.id)}>
                 {props.title}
             </span>
             <style jsx>{`
@@ -146,24 +157,68 @@ type TermAgreementFormProps = {
     items: Array<TermAgreementSelectorProps>,
 };
 const TermAgreementForm = (props:TermAgreementFormProps) => {
-    const tempItems = [
-        {
-            id: "1",
-            title: "Guide for private information collection and use",
-            content: "Guide for private information collection and use",
-            checked: true
-        },
-        {
-            id: "2",
-            title: "Guide for private information collection and use",
-            content: "Guide for private information collection and use",
-            checked: true
-        },
-    ];
+    const [titleIsChecked, setTitleIsChecked] = React.useState(false);
+    const [agrementList, setAgreementList] = React.useState(props.items.map((item)=>{item.checked=false;return item}));
+    const [showTermModal, setShowTermModal] = React.useState(false);
+    const [termModalContents,setTermModalContents] = React.useState({id:"",title:"",content:""});
+
+    const onClickShowTermModal = (id:string) => {
+        setTermModalContents({
+            id:id,
+            content:agrementList.find((item)=>item.id===id).content,
+            title:agrementList.find((item)=>item.id===id).title
+        });
+        setShowTermModal(true);
+    };
+    const onClickCloseTermModal = () => {
+        setShowTermModal(false);
+        updateItemChanged(termModalContents.id,true);
+        setTermModalContents({id:"",title:"",content:""});
+    }
+        
+
+    const onClickTermTitle= () => {
+        setAllAgreementChecked(!titleIsChecked);
+        setTitleIsChecked(!titleIsChecked);
+    };
+    const setAllAgreementChecked = (checked:boolean) => {
+        const newList = agrementList.map((item) => {
+            return {
+                ...item,
+                checked: checked,
+            };
+        });
+        setAgreementList(newList);
+        console.log(newList)
+    };
+    const updateItemChanged = (id:string,checked:boolean) => {
+        console.log("onChangeItem:"+id+":"+checked+"")
+        const newList = agrementList.map((item) => {
+            if (item.id === id) {
+                return {
+                    ...item,
+                    checked: checked,
+                };
+            }
+            return item;
+        });
+        setAgreementList(newList);
+    };
+
     return (
         <div className="sign-up2-group27">
-            <TermAgreementTitle title={props.title} />
-            <TermAgreementSelectorList items = {props.items} />
+            <TermAgreementTitle title={props.title} onClick={onClickTermTitle} checked={titleIsChecked}  />
+            <TermAgreementSelectorList 
+            items = {agrementList} 
+            onCheckChanged={(id:string,checked:boolean)=>updateItemChanged(id,checked)}   
+            onClickShowModal={(id:string)=>onClickShowTermModal(id)}
+            />
+            {showTermModal&&
+            <AlertModal headerText={termModalContents.title}
+
+                bodyText={termModalContents.content}
+                onClose={()=>onClickCloseTermModal()} />
+        }
             <style jsx>{`
             .sign-up2-group27 {
                 width: 100%;
