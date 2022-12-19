@@ -106,19 +106,8 @@ const createUser = async (accessToken:string|null,userData:{
     return response
 }
 
-const useCreateUser=(userData:{
-    email:string,
-    password:string,
-    name:string,
-    phonenum:string,
-    nickname:string,
-    address:string,
-    address_extra:string,
-    passport_number:string,
-    alien_registration_number:string
-},isCreatedByAdmin:Boolean=false) =>{
+const useCreateUser=(isCreatedByAdmin:Boolean=false) =>{
     const [cookies, setCookie, removeCookie] = useCookies(['SEESAW_ACCESS_TOKEN'])
-    console.log("useCreateUser Requested",userData);
     if (isCreatedByAdmin){
         const userRoles = getUserRoles(cookies.SEESAW_ACCESS_TOKEN);
         console.log("userRoles:",userRoles)
@@ -130,9 +119,30 @@ const useCreateUser=(userData:{
             }})
         }    
         return useMutation({
-            mutationFn:async ()=>createUser(cookies.SEESAW_ACCESS_TOKEN,userData)})
+            mutationFn:async (userData:{
+                email:string,
+                password:string,
+                name:string,
+                phonenum:string,
+                nickname:string,
+                address:string,
+                address_extra:string,
+                passport_number:string,
+                alien_registration_number:string,
+                terms:Array<{termID:number,agree:boolean}>|null
+            },)=>createUser(cookies.SEESAW_ACCESS_TOKEN,userData)})
     }
-    return useMutation({mutationFn:async ()=>createUser(null,userData)});
+    return useMutation({mutationFn:async (userData:{
+        email:string,
+        password:string,
+        name:string,
+        phonenum:string,
+        nickname:string,
+        address:string,
+        address_extra:string,
+        passport_number:string,
+        alien_registration_number:string
+    })=>createUser(null,userData)});
 }
 
 

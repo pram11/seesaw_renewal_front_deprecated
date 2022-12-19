@@ -7,8 +7,9 @@ import TrueFalseButton from "../../../components/buttons/TrueFalseButton/TrueFal
 import { useRouter } from "next/router";
 import { useCreateUser } from "../../../services/users";
 import TermAgreementForm, { TermAgreementSelectorProps } from "../../../components/forms/TermAgreement";
-import { getTermList } from "../../../services/terms";
+import { getTermList, useCreateTermAgreement } from "../../../services/terms";
 import AlertModal from "../../../components/modal/AlertModal";
+import { Item } from "react-bootstrap/lib/Breadcrumb";
 const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
     const router = useRouter();
     const [showAlertModal, setShowAlertModal] = React.useState<boolean>(false);
@@ -40,6 +41,7 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             alien_registration_number: "",
         },false
     );
+    const agreeTerm = useCreateTermAgreement();
     const checkAgreement = () =>{
         let isAgreed = true;
         agreementList.forEach((agreement)=>{
@@ -57,7 +59,9 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             setShowAlertModal(true);
             return;
         }
-        let res = await createUser.mutateAsync({userData:{
+        
+        let terms = agreementList.map((agreement)=>{return {termID:Number(agreement.id),agree:agreement.checked}});
+        let res = await createUser.mutateAsync({
             email: email,
             password: password,
             name: "",
@@ -67,8 +71,12 @@ const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
             address_extra: "",
             passport_number: "",
             alien_registration_number: "",
-        }});
-        if (res.status === 201){
+            terms:terms
+        });
+        
+        
+
+        if (res.status === 201){            
             router.push(
                 { pathname: "/signup/success", query: { email: email } },
                 "/signup/success"
