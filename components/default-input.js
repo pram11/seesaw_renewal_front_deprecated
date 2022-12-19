@@ -8,14 +8,17 @@ const DefaultInput = (props) => {
       <div className="default-input-email-input">
         <span className="default-input-text">{props.text}</span>
         <input
-          type="text"
-          placeholder={props.textinput_placeholder}
+          type={props.type}
+          placeholder={props.placeholder}
           className="default-input-textinput input"
+          onChange={(evt) => props.onChange(evt.target.value)}
+          value = {props.value}
         />
       </div>
       <style jsx>
         {`
           .default-input-email-input {
+            
             position: relative;
             box-sizing: border-box;
             align-items: flex-start;
@@ -69,12 +72,17 @@ const DefaultInput = (props) => {
 
 DefaultInput.defaultProps = {
   text: 'Text',
-  textinput_placeholder: 'placeholder',
+  placeholder: 'placeholder',
+  type: 'text',
+  onChange: () => {},
 }
 
 DefaultInput.propTypes = {
   text: PropTypes.string,
-  textinput_placeholder: PropTypes.string,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  value: PropTypes.string,
 }
 
 export default DefaultInput
