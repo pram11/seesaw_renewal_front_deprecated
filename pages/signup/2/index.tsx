@@ -3,11 +3,16 @@ import Head from "next/head";
 
 import BackHeader from "../../../components/BackHeader";
 import BoxInput from "../../../components/box-input";
-import TrueFalseButton from "../../../components/true-false-button";
+import TrueFalseButton from "../../../components/buttons/TrueFalseButton/TrueFalseButton";
 import { useRouter } from "next/router";
 import { useCreateUser } from "../../../services/users";
-const SignUp2 = (props: {}) => {
+import TermAgreementForm, { TermAgreementSelectorProps } from "../../../components/forms/TermAgreement";
+import { getTermList } from "../../../services/terms";
+import AlertModal from "../../../components/modal/AlertModal";
+const SignUp2 = (props: {termList:Array<TermAgreementSelectorProps>}) => {
     const router = useRouter();
+    const [showAlertModal, setShowAlertModal] = React.useState<boolean>(false);
+    const [alertModalMessage, setAlertModalMessage] = React.useState<string>("");
     const [nickname, setNickname] = React.useState<string>(
         router.query.nickname === undefined
             ? ""
@@ -18,9 +23,10 @@ const SignUp2 = (props: {}) => {
             ? ""
             : router.query.phonenum.toString()
     );
-
+    
     const email = router.query.email?.toString()!;
     const password = router.query.password?.toString()!;
+    const [agreementList,setAgreementList] = React.useState<Array<TermAgreementSelectorProps>>(props.termList);
     const createUser = useCreateUser(
         {
             email: email,
@@ -34,9 +40,24 @@ const SignUp2 = (props: {}) => {
             alien_registration_number: "",
         },false
     );
-    const onClickNext = () => {
-        
-        createUser.mutateAsync({userData:{
+    const checkAgreement = () =>{
+        let isAgreed = true;
+        agreementList.forEach((agreement)=>{
+            if (!agreement.checked&&agreement.required){
+                isAgreed = false;
+            }
+        });
+        return isAgreed;
+    }
+    const onClickNext = async () => {
+        console.log("agreementList:",agreementList);
+        if (!checkAgreement()){
+            console.warn("failed to agree terms");
+            setAlertModalMessage("약관에 동의해주세요");
+            setShowAlertModal(true);
+            return;
+        }
+        let res = await createUser.mutateAsync({userData:{
             email: email,
             password: password,
             name: "",
@@ -47,6 +68,16 @@ const SignUp2 = (props: {}) => {
             passport_number: "",
             alien_registration_number: "",
         }});
+        if (res.status === 201){
+            router.push(
+                { pathname: "/signup/success", query: { email: email } },
+                "/signup/success"
+            );
+        }else{
+            console.warn("failed to create user");
+            setAlertModalMessage("회원가입에 실패했습니다. 입력을 확인해주세요");
+            setShowAlertModal(true);
+        }
     };
 
     const onClickPrev = () => {
@@ -63,14 +94,10 @@ const SignUp2 = (props: {}) => {
             "/signup/1"
         );
     };
-    useEffect(() => {
-        if (createUser.status === "success") {
-            router.push(
-                { pathname: "/signup/success", query: { email: email } },
-                "/signup/success"
-            );
-        }
-    }, [createUser.data]);
+    const closeAlertModal = () => {
+        setAlertModalMessage("");
+        setShowAlertModal(false);
+    };
 
     return (
         <>
@@ -87,7 +114,7 @@ const SignUp2 = (props: {}) => {
                     rootClassName="back-header-root-class-name3"
                     headerRightText=" "
                 ></BackHeader>
-                <BoxInput
+                    <BoxInput
                     inputText="Please enter your nickname"
                     inputTitle="NICKNAME"
                     rootClassName="box-input-root-class-name3"
@@ -105,46 +132,28 @@ const SignUp2 = (props: {}) => {
                         setPhonenum(e.target.value);
                     }}
                 ></BoxInput>
-                <div className="sign-up2-group27">
-                    <div className="sign-up2-group86">
-                        <input
-                            type="checkbox"
-                            checked="true"
-                            className="sign-up2-checkbox"
-                        />
-                        <span className="sign-up2-text">Phone Number</span>
-                    </div>
-                    <div className="sign-up2-group28">
-                        <input
-                            type="checkbox"
-                            checked="true"
-                            className="sign-up2-checkbox1"
-                        />
-                        <span className="sign-up2-text1">
-                            Guide for Terms of Service
-                        </span>
-                    </div>
-                    <div className="sign-up2-group281">
-                        <input
-                            type="checkbox"
-                            checked="true"
-                            className="sign-up2-checkbox2"
-                        />
-                        <span className="sign-up2-text2">
-                            Guide for private information collection and use
-                        </span>
-                    </div>
-                </div>
+                <TermAgreementForm title="약관" items={props.termList} getAgreementList={(list:Array<TermAgreementSelectorProps>)=>{setAgreementList(list)}} />
+                
+                
                 <TrueFalseButton
-                    text="Prev"
-                    text1="Next"
+                    falseButtonText="Prev"
+                    trueButtonText="Next"
                     rootClassName="true-false-button-root-class-name3"
                     onClickTrue={onClickNext}
                     onClickFalse={onClickPrev}
                 ></TrueFalseButton>
+                {showAlertModal&&<AlertModal 
+                headerText="알림"
+                bodyText={alertModalMessage}
+                onClose={closeAlertModal}
+                />}
             </div>
             <style jsx>
                 {`
+                    .form-wrapper {
+                        flex:1;
+                        flex-direction: row
+                    }
                     .sign-up2-container {
                         width: 100%;
                         display: flex;
@@ -290,5 +299,15 @@ const SignUp2 = (props: {}) => {
         </>
     );
 };
+
+export const getServerSideProps = async (context) => {
+    const res = await (await getTermList({typeCode:"SIGN_UP"})).json();
+    console.log(res)
+    return {props:{
+        termList: res
+        }
+    }
+}
+
 
 export default SignUp2;

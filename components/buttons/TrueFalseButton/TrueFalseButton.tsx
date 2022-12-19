@@ -1,18 +1,24 @@
 import React from 'react'
 
-import PropTypes from 'prop-types'
 
-const TrueFalseButton = (props) => {
+type TrueFalseButtonTypes ={
+    trueButtonText: string,
+    falseButtonText: string,
+    onClickTrue: Function,
+    onClickFalse: Function,
+    rootClassName?: string,
+  }
+const TrueFalseButton = (props:TrueFalseButtonTypes) => {
   return (
     <>
       <div
         className={`true-false-button-true-false-button ${props.rootClassName} `}
       >
         <button className="true-false-button-button button" onClick={()=>props.onClickFalse()}>
-          <span className="true-false-button-text">{props.text}</span>
+          <span className="true-false-button-text">{props.falseButtonText}</span>
         </button>
         <button className="true-false-button-button1 button" onClick={()=>props.onClickTrue()}>
-          <span className="true-false-button-text1">{props.text1}</span>
+          <span className="true-false-button-text1">{props.trueButtonText}</span>
         </button>
       </div>
       <style jsx>
@@ -22,6 +28,7 @@ const TrueFalseButton = (props) => {
             width: 100%;
             display: flex;
             position: relative;
+            align-self:flex-end;
             align-items: flex-start;
             justify-content: center;
           }
@@ -59,7 +66,7 @@ const TrueFalseButton = (props) => {
           }
 
           .true-false-button-root-class-name3 {
-            top: 420px;
+            // top: 420px;
             left: 0px;
             position: static;
             align-self: center;
@@ -67,7 +74,7 @@ const TrueFalseButton = (props) => {
           @media (max-width: 479px) {
             .true-false-button-true-false-button {
               height: 90px;
-              position: relative;
+              // position: relative;
             }
             .true-false-button-button {
               height: 90px;
@@ -135,12 +142,5 @@ TrueFalseButton.defaultProps = {
   text: 'Button',
 }
 
-TrueFalseButton.propTypes = {
-  rootClassName: PropTypes.string,
-  text1: PropTypes.string,
-  text: PropTypes.string,
-  onClickTrue: PropTypes.func.isRequired,
-  onClickFalse: PropTypes.func.isRequired,
-}
 
 export default TrueFalseButton

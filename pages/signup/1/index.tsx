@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import BackHeader from '../../../components/BackHeader'
 import BoxInput from '../../../components/box-input'
-import TrueFalseButton from '../../../components/true-false-button'
+import TrueFalseButton from '../../../components/buttons/TrueFalseButton/TrueFalseButton'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 const SignUp = (props:{
@@ -87,8 +87,8 @@ const SignUp = (props:{
           onClickFalse={()=>{
             router.back();
           }}
-          text="Prev"
-          text1="Next"
+          falseButtonText="Prev"
+          trueButtonText="Next"
           rootClassName="true-false-button-root-class-name1"
         ></TrueFalseButton>
       </div>
